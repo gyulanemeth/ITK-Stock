@@ -7,7 +7,7 @@ public class TestMain {
 	 */
 	public static void main(String[] args) {
 		System.out.println("ITK-Stock server");
-
+		System.out.println("test");
 	}
 
 }
