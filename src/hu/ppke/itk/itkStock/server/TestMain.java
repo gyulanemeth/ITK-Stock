@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
 import hu.ppke.itk.itkStock.dbaccess.UserManager;
 
-public class TestMain {
+public class TestMain
+{
 
 	/**
 	 * @param args
@@ -19,8 +20,9 @@ public class TestMain {
 		{
 			dbc.initConnection();
 			umg = new UserManager(dbc);
-			umg.addUser("troll", "lol@asd.hu", "blabla");
+			umg.addUser("troll2", "lol@asd.hu", "blabla");
 			dbc.closeConnection();
+			
 		}
 		catch (SQLException e)
 		{
