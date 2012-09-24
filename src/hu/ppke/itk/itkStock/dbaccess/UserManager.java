@@ -14,6 +14,8 @@ public class UserManager extends AbstractManager<User>
 	private PreparedStatement setEmail = null;
 	private PreparedStatement setUsername = null;
 	private PreparedStatement authenticateUser = null;
+	private PreparedStatement checkUserExistenceByName = null;
+	private PreparedStatement checkUserExistenceById = null;
 	private PreparedStatement promoteAdmin = null;
 	private PreparedStatement demoteAdmin = null;
 	
@@ -33,6 +35,8 @@ public class UserManager extends AbstractManager<User>
 		this.setEmail = this.dbConnector.prepareStatement("UPDATE users SET email = ? WHERE username = ?");
 		this.setUsername = this.dbConnector.prepareStatement("UPDATE users SET username = ? WHERE username = ?");
 		this.authenticateUser = this.dbConnector.prepareStatement("SELECT IF( ( SELECT COUNT( * ) FROM users WHERE username = ? AND PASSWORD = ? ) = 0, FALSE, TRUE )");
+		this.checkUserExistenceByName = this.dbConnector.prepareStatement("SELECT IF( ( SELECT COUNT( * ) FROM users WHERE username = ? ) = 0, FALSE, TRUE )");
+		this.checkUserExistenceById = this.dbConnector.prepareStatement("SELECT IF( ( SELECT COUNT( * ) FROM users WHERE id = ? ) = 0, FALSE, TRUE )");
 		this.promoteAdmin = this.dbConnector.prepareStatement("UPDATE users SET is_admin = 1 WHERE username = ?");
 		this.demoteAdmin = this.dbConnector.prepareStatement("UPDATE users SET is_admin = 0 WHERE username = ?");
 		
@@ -83,6 +87,24 @@ public class UserManager extends AbstractManager<User>
 		return this._resultSet.getBoolean(1); 
 	}
 	
+	public boolean checkUserExistenceByName(String username) throws SQLException
+	{
+		this.checkUserExistenceByName.setString(1, username);
+		this._resultSet = this.checkUserExistenceByName.executeQuery();
+		this._resultSet.first();
+		
+		return this._resultSet.getBoolean(1); 
+	}
+	
+	public boolean checkUserExistenceById(int id) throws SQLException
+	{
+		this.checkUserExistenceById.setInt(1, id);
+		this._resultSet = this.checkUserExistenceById.executeQuery();
+		this._resultSet.first();
+		
+		return this._resultSet.getBoolean(1); 
+	}
+	
 	public void promoteAdmin(String username) throws SQLException
 	{
 		this.promoteAdmin.setString(1, username);
@@ -96,18 +118,21 @@ public class UserManager extends AbstractManager<User>
 	}
 
 	@Override
-	public void update(User businessObject) throws SQLException
+	public void update(User bo) throws SQLException
 	{
-		this.updateUser.setString(1, businessObject.getUsername());
-		this.updateUser.setString(2, businessObject.getEmail());
-		this.updateUser.setString(3, businessObject.getPassword());
-		this.updateUser.setInt(4, businessObject.isAdmin() ? 1 : 0);
+		this.updateUser.setString(1, bo.getUsername());
+		this.updateUser.setString(2, bo.getEmail());
+		this.updateUser.setString(3, bo.getPassword());
+		this.updateUser.setInt(4, bo.isAdmin() ? 1 : 0);
 		this.updateUser.executeUpdate();
 	}
 
 	@Override
-	public User get(int id) throws SQLException
+	public User get(int id) throws SQLException, DatabaseException
 	{
+		if ( !this.checkUserExistenceById(id) )
+			throw new DatabaseException("User with id = " + id + " does not exist.");
+		
 		this.getUserById.setInt(1, id);
 		this._resultSet = this.getUserById.executeQuery();
 		
@@ -126,8 +151,11 @@ public class UserManager extends AbstractManager<User>
 		return tempuser;
 	}
 	
-	public User get(String username) throws SQLException
+	public User get(String username) throws SQLException, DatabaseException
 	{
+		if ( !this.checkUserExistenceByName(username) )
+			throw new DatabaseException("User with username = " + username + " does not exist.");
+		
 		this.getUserByName.setString(1, username);
 		this._resultSet = this.getUserById.executeQuery();
 		
@@ -145,5 +173,17 @@ public class UserManager extends AbstractManager<User>
 		
 		return tempuser;
 	}
-
+	
+	@Override
+	public void create(User bo) throws SQLException, DatabaseException
+	{
+		if ( bo.getId() != 0 && this.checkUserExistenceById(bo.getId()) )
+			throw new DatabaseException("User with id =" + bo.getId() + " already exists.");
+		
+		if ( bo.getUsername() != null && this.checkUserExistenceByName(bo.getUsername()) )
+			throw new DatabaseException("User with username =" + bo.getUsername() + " already exists.");
+		
+		this.addUser( bo.getUsername(), bo.getEmail(), bo.getPassword() );
+		bo.get();
+	}
 }

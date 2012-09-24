@@ -13,6 +13,7 @@ public abstract class AbstractManager<T extends BusinessObject>
 		this.dbConnector = dbConnector;
 	}
 	
-	public abstract void update(T businessObject) throws SQLException;
-	public abstract T get(int id) throws SQLException;
+	public abstract void update(T bo) throws SQLException;
+	public abstract T get(int id) throws SQLException, DatabaseException;
+	public abstract void create(T bo) throws SQLException, DatabaseException;
 }
