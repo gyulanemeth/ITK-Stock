@@ -1,15 +1,22 @@
 package hu.ppke.itk.itkStock.dbaccess;
 
-public class DatabaseException extends Exception
+/**
+ * 'BusinessObject'-ekre, es azok 'Manager' osztalyaira vonatkozo kivetelosztaly.
+ * 
+ * @see BusinessObject
+ * @see AbstractManager
+ */
+
+public class BusinessObjectException extends Exception
 {
 
-	public DatabaseException()
+	public BusinessObjectException()
 	{
 		this.doLog(""); //dummy
 		// TODO Auto-generated constructor stub
 	}
 	
-	public DatabaseException(String msg)
+	public BusinessObjectException(String msg)
 	{
 		super(msg);
 		this.doLog(msg);

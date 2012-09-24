@@ -2,37 +2,52 @@ package hu.ppke.itk.itkStock.dbaccess;
 
 import java.sql.SQLException;
 
+/**
+ * Ez az osztaly reprezentalja a felhasznalokat ('User'). Egy 'BusinessObject', tehat alapesetben egyes peldanyai 
+ * osszekottetesben vannak az adatbazissal. Konstruktoraban meg kell adnunk azt a 'UserManager' osztaly-peldanyt, mely az adatbazissal az osszekottetest biztositja.
+ * 
+ * @see UserManager
+ * 
+ */
+
 public class User extends BusinessObject
 {
-	private int id;
 	private String username;
 	private String email;
 	private String password;
-	private boolean is_admin;
+	private boolean admin;
+	
+	private boolean changed = false;
 
-	public User( UserManager userManager, String username ) throws DatabaseException
+	public User( UserManager userManager, String username ) throws BusinessObjectException
 	{
-		super(userManager);
-		this.setData(0, username, "", "", false);
+		super(userManager,0);
+		this.setData(username, "", "", false);
 	}
 	
-	public User( UserManager userManager, int id ) throws DatabaseException
+	public User( UserManager userManager, int id ) throws BusinessObjectException
 	{
-		super(userManager);
-		this.setData(id, "", "", "", false);
+		super(userManager,id);
+		this.setData("", "", "", false);
 	}
 	
-	public void setData( int id, String username, String email, String password, boolean is_admin ) throws DatabaseException
+	public User( UserManager userManager ) throws BusinessObjectException
 	{
-		this.setId(id);
+		super(userManager, 0);
+		this.setData("", "", "", false);
+	}
+	
+	public void setData( String username, String email, String password, boolean is_admin ) throws BusinessObjectException
+	{
 		this.setUsername(username);
 		this.setEmail(email);
 		this.setPassword(password);
 		this.setAdmin(is_admin);
+		this.changed = true;
 	}
 	
 	@Override
-	public boolean get() throws DatabaseException, SQLException
+	public boolean get() throws SQLException, BusinessObjectException
 	{
 		User temp = null;
 		
@@ -41,44 +56,41 @@ public class User extends BusinessObject
 		else if ( this.username != null )
 			temp = (User) ( (UserManager) this.manager ).get(this.username);
 		else
-			throw new DatabaseException("Neither user id, nor username specified.");
+			throw new BusinessObjectException("Neither user id, nor username specified.");
 		
 		if ( temp == null )
 			return false;
 		
+		
+		this.id = temp.id;
 		this.username = temp.username;
 		this.email = temp.email;
 		this.password = temp.password;
-		this.is_admin = temp.is_admin;
+		this.admin = temp.admin;
 		
-		this.initilalized = true;
+		this.identified = true;
+		this.changed = false;
 		
 		return true;
 	}
 
 	@Override
-	public void update() throws SQLException
+	public void update() throws SQLException, BusinessObjectException
 	{
-		this.manager.update(this);
+		if ( !this.identified )
+			throw new BusinessObjectException("Must identify BusinessObject before updating in database.");
+		
+		if ( this.changed )
+			((UserManager)this.manager).update(this);
 	}
 	
 	@Override
-	public void create() throws SQLException, DatabaseException
+	public void create() throws SQLException, BusinessObjectException
 	{
-		this.manager.create(this);
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id) throws DatabaseException
-	{
-		if ( this.initilalized )
-			throw new DatabaseException("Unable to change id after synchronization with the DB.");
+		if ( this.identified )
+			throw new BusinessObjectException("Identified object should not be created.");
 		
-		this.id = id;
+		((UserManager)this.manager).create(this);
 	}
 
 	public String getEmail()
@@ -89,6 +101,7 @@ public class User extends BusinessObject
 	public void setEmail(String email)
 	{
 		this.email = email;
+		this.changed = true;
 	}
 
 	public String getUsername()
@@ -99,6 +112,7 @@ public class User extends BusinessObject
 	public void setUsername(String username)
 	{
 		this.username = username;
+		this.changed = true;
 	}
 
 	public String getPassword()
@@ -109,16 +123,18 @@ public class User extends BusinessObject
 	public void setPassword(String password)
 	{
 		this.password = password;
+		this.changed = true;
 	}
 
 	public boolean isAdmin()
 	{
-		return is_admin;
+		return admin;
 	}
 
 	public void setAdmin(boolean admin)
 	{
-		this.is_admin = admin;
+		this.admin = admin;
+		this.changed = true;
 	}
 	
 }
