@@ -1,0 +1,8 @@
+# contents of bin in general
+bin/*
+
+# class files
+*.class
+
+# jar files
+*.jar
