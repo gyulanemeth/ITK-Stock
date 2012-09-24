@@ -1,8 +1,11 @@
 package hu.ppke.itk.itkStock.server;
 
 import java.sql.SQLException;
+import java.util.Random;
 
+import hu.ppke.itk.itkStock.dbaccess.BusinessObjectException;
 import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
+import hu.ppke.itk.itkStock.dbaccess.User;
 import hu.ppke.itk.itkStock.dbaccess.UserManager;
 
 public class TestMain
@@ -15,12 +18,22 @@ public class TestMain
 	{
 		DatabaseConnector dbc = new DatabaseConnector();
 		UserManager umg = null;
+		Random rgen = new Random();
 		
 		try
 		{
 			dbc.initConnection();
 			umg = new UserManager(dbc);
-			umg.addUser("troll2", "lol@asd.hu", "blabla");
+			String username = "troll" + rgen.nextInt(9999);
+			umg.addUser(username, username + "@troll.hu", "problem?");
+			User testuser = new User(umg, username );
+			testuser.get();
+			System.out.println(testuser.getId());
+			System.out.println(testuser.getUsername());
+			System.out.println(testuser.getEmail());
+			System.out.println(testuser.getPassword());
+			System.out.println(testuser.isAdmin());
+			
 			dbc.closeConnection();
 			
 		}
@@ -30,6 +43,11 @@ public class TestMain
 			e.printStackTrace();
 		}
 		catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (BusinessObjectException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();

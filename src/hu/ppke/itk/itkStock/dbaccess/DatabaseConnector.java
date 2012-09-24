@@ -6,6 +6,18 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Ez az osztaly valositja meg az adatbazis kapcsolatot.
+ * A konstruktor meghivasa nem elegendo a kapcsolat kiepitesehez.
+ * Szukseges az 'initConnection()' tagfuggveny meghivasa.
+ * @see #initConnection()
+ * A kapcsolat lezarasahoz a 'closeConnection()' fuggvenyt hivjuk meg.
+ * Ilyenkor az adatbazis csatlakozas lezarasa mellett felszabadulnak a 'PreparedStatement'-jeink is.
+ * @see #closeConnection()
+ * @see #_connection
+ * @see #preparedStatements
+ */
+
 public class DatabaseConnector
 {
 	private static final int defaultPortnumber = 8889;
