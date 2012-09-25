@@ -1,0 +1,11 @@
+# contents of bin in general
+bin/*
+
+# class files
+*.class
+
+# jar files
+*.jar
+
+# Apple thing.
+.DS_Store
