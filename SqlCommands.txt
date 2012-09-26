@@ -1,0 +1,15 @@
+DELETE FROM StockData;
+DROP TABLE StockData;
+DELETE FROM User;
+DROP TABLE User;
+DELETE FROM StockWatch;
+DROP TABLE StockWatch;
+DELETE FROM StockHistory;
+DROP TABLE StockHistory;
+ 
+CREATE TABLE StockData(papername VARCHAR(20), per INT, date INT, time INT, close INT, volume INT);
+CREATE TABLE User(user_id INT PRIMARY KEY NOT NULL, name VARCHAR(20), email VARCHAR(40), admin BOOLEAN);
+CREATE TABLE StockWatch(user_id INT PRIMARY KEY NOT NULL, paperName VARCHAR(10));
+CREATE TABLE StockHistory(user_id INT PRIMARY KEY NOT NULL, paperName VARCHAR(10), price INT, volume INT);
+ 
+INSERT INTO User values(1, 'Some Body', 'somebody@something.com', TRUE);
