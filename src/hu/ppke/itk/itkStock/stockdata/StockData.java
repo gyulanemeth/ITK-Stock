@@ -12,7 +12,7 @@ public class StockData {
 		@param    date   The date on which the transactions happened. Only the year-month-day bit of the StockDate object is taken into account.
 		@return          A Map holding the transactions for which transaction->date = date and transaction->stock = ticker
 	*/
-	public static Map<String, SortedMap<StockDate, Transaction> > fetchData(String ticker, StockDate date) throws SQLException {
+	public static Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > > fetchData(String ticker, StockDate date) throws SQLException {
 		return fetch(new String[]{ticker}, date, date);
 	}
 	/**
@@ -23,7 +23,7 @@ public class StockData {
 		@param    to      The end date of the interval, inclusive. Only the year-month-day bit of the StockDate object is taken into account.
 		@return   A Map holding the transactions for which: from <= transaction->datettime <= to and transaction->ticker = ticker.
 	*/
-	public static Map<String, SortedMap<StockDate, Transaction> >  fetchData(String ticker, StockDate from, StockDate to) throws SQLException {
+	public static Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > >  fetchData(String ticker, StockDate from, StockDate to) throws SQLException {
 		return fetch(new String[]{ticker}, from, to);
 	}
 
@@ -35,7 +35,7 @@ public class StockData {
 		@param    to      The end date of the interval, inclusive. Only the year-month-day bit of the StockDate object is taken into account.
 		@return           A Map holding the transactions for which transaction->date = date and transaction->stock in tickers
 	*/
-	public static Map<String, SortedMap<StockDate, Transaction> > fetchData(String[] tickers, StockDate date) throws SQLException {
+	public static Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > > fetchData(String[] tickers, StockDate date) throws SQLException {
 		return fetch(tickers, date, date);
 	}
 	/**
@@ -46,7 +46,7 @@ public class StockData {
 		@param    to      The end date of the interval, inclusive. Only the year-month-day bit of the StockDate object is taken into account.
 		@return   A Map holding the transactions for which: from <= transaction->datettime <= to and transaction->ticker in tickers.
 	*/
-	public static Map<String, SortedMap<StockDate, Transaction> >  fetchData(String[] tickers, StockDate from, StockDate to) throws SQLException {
+	public static Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > >  fetchData(String[] tickers, StockDate from, StockDate to) throws SQLException {
 		return fetch(tickers, from, to);
 	}
 
@@ -56,7 +56,7 @@ public class StockData {
 		@param    date   The date. Only the year-month-day bit of the StockDate object is taken into account.
 		@return   A Map holding the transactions for which: transaction->date = date.
 	*/
-	public static Map<String, SortedMap<StockDate, Transaction> > fetchData(StockDate date) throws SQLException {
+	public static Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > > fetchData(StockDate date) throws SQLException {
 		return fetch(null, date, date);
 	}
 	/**
@@ -66,7 +66,7 @@ public class StockData {
 		@param    to      The end date of the interval, inclusive. Only the year-month-day bit of the StockDate object is taken into account.
 		@return   A Map holding the transactions for which: from <= transaction->datettime <= to.
 	*/
-	public static Map<String, SortedMap<StockDate, Transaction> >  fetchData(StockDate from, StockDate to) throws SQLException {
+	public static Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > >  fetchData(StockDate from, StockDate to) throws SQLException {
 		return fetch(null, from, to);
 	}
 
@@ -76,20 +76,20 @@ public class StockData {
 
 		Assumes the database to have CREATE TABLE StockData(papername VARCHAR(20), per INT, date INT, time INT, close INT, volume INT);
 	*/
-	protected static Map<String, SortedMap<StockDate, Transaction> > fetch(String[] tickers, StockDate from, StockDate to) throws SQLException {
-		Map<String, SortedMap<StockDate, Transaction> > Result = new HashMap<String, SortedMap<StockDate, Transaction>>();
+	protected static Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > > fetch(String[] tickers, StockDate from, StockDate to) throws SQLException {
+		Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > > Result = new HashMap<String, SortedMap<StockDate, SortedMap<StockTime, Transaction>>>();
 		DatabaseConnector dbc = new DatabaseConnector(3306, "root", "", "127.0.0.1", "itkstock");
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		try {
 			dbc.initConnection();
 			if(tickers == null || tickers.length < 1) {
-				stmt = dbc.prepareStatement("select papername, date, close, volume from StockData where date between ? and ?");
+				stmt = dbc.prepareStatement("select papername, date, time, close, volume from StockData where date between ? and ?");
 			}
 			else {
 				StringBuilder sb = new StringBuilder("?");
 				for(int i=1; i<tickers.length; ++i) sb.append(", ?");
-				stmt = dbc.prepareStatement("select papername, date, close, volume from StockData where date between ? and ? and papername in ("+sb.toString()+")");
+				stmt = dbc.prepareStatement("select papername, date, time, close, volume from StockData where date between ? and ? and papername in ("+sb.toString()+")");
 
 				for(int i=0; i<tickers.length; ++i) stmt.setString(i+3, tickers[i]);
 			}
@@ -103,27 +103,40 @@ public class StockData {
 			int price;
 			int volume;
 			StockDate key;
-			SortedMap<StockDate, Transaction> tree;
+			SortedMap<StockDate, SortedMap<StockTime, Transaction> > tree;
+			StockTime timekey;
+			SortedMap<StockTime, Transaction> timetree;
+			Transaction value = null;
 			while(rs.next()) {
 				stock = rs.getString("papername");
 				date = rs.getInt("date");
+				time = rs.getInt("time");
 				price = rs.getInt("close");
 				volume = rs.getInt("volume");
 
 				key = new StockDate( date/10000, (date % 10000)/100, date % 100);
+				timekey = new StockTime( time/10000, (time % 10000)/100, time % 100 );
+				value = new Transaction(price, volume);
 				if( Result.containsKey(stock) ) {
 					tree = Result.get(stock);
 					if( tree.containsKey(key) ) {
-						price=(tree.get(key).getPrice() + price) / 2;
-						volume+=tree.get(key).getVolume();
+						timetree = tree.get(key);
+						if(timetree.containsKey(timekey)) {
+							value = Transaction.merge( timetree.get(timekey), value );
+						}
 					}
-					tree.put(key, new Transaction(price, volume));
+					else {
+						timetree = new TreeMap<StockTime, Transaction>();
+						tree.put(key, timetree);
+					}
 				}
 				else {
-					tree=new TreeMap<StockDate, Transaction>();
+					tree=new TreeMap<StockDate, SortedMap<StockTime, Transaction> >();
+					timetree = new TreeMap<StockTime, Transaction>();
 					Result.put( stock, tree );
-					tree.put( key, new Transaction(rs.getInt("close"), rs.getInt("volume")) );
+					tree.put(key, timetree);
 				}
+				timetree.put(timekey, value);
 			}
 		}
 		catch(ClassNotFoundException e) {
@@ -143,7 +156,7 @@ public class StockData {
 	public static void main(String[] args) {
 		System.out.println("Usage examples for StockData.fetchData() family");
 		try {
-			Map<String, SortedMap<StockDate, Transaction> > db;
+			Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > > db;
 
 			db = StockData.fetchData(new StockDate(2011,01,05), new StockDate(2014,01,05));
 			System.out.println(db.toString());

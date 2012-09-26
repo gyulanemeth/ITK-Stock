@@ -20,6 +20,10 @@ public class Transaction {
 		return volume;
 	}
 
+	public static Transaction merge(Transaction left, Transaction right) {
+		return new Transaction( (left.price+right.price)/2, left.volume+right.volume);
+	}
+
 	@Override public String toString() {
 		return new StringBuilder().append(volume).append(" @ ").append(price).toString();
 	}
