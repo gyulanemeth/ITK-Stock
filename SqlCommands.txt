@@ -13,3 +13,4 @@ CREATE TABLE StockWatch(user_id INT PRIMARY KEY NOT NULL, paperName VARCHAR(10))
 CREATE TABLE StockHistory(user_id INT PRIMARY KEY NOT NULL, paperName VARCHAR(10), price INT, volume INT);
  
 INSERT INTO User values(1, 'Some Body', 'somebody@something.com', TRUE);
+INSERT INTO User values(2, 'No Body', 'nobody@nothing.com', FALSE);
