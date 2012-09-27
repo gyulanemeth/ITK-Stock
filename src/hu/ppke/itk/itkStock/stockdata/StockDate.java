@@ -25,12 +25,12 @@ public class StockDate implements Comparable<StockDate> {
 		return (int)day;
 	}
 
-	@Override public int compareTo(StockDate left) {
-		if(year - left.year == 0) {
-			if(month - left.month == 0) {
-				return day - left.day;
-			} else return month - left.month;
-		} else return year - left.year;
+	@Override public int compareTo(StockDate right) {
+		if(year - right.year == 0) {
+			if(month - right.month == 0) {
+				return day - right.day;
+			} else return month - right.month;
+		} else return year - right.year;
 	}
 
 	@Override public String toString() {
