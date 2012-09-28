@@ -1,16 +1,22 @@
-DELETE FROM StockData;
-DROP TABLE StockData;
-DELETE FROM User;
-DROP TABLE User;
-DELETE FROM StockWatch;
-DROP TABLE StockWatch;
-DELETE FROM StockHistory;
-DROP TABLE StockHistory;
+DROP TABLE IF EXISTS StockData;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS StockWatch;
+DROP TABLE IF EXISTS StockHistory;
  
-CREATE TABLE StockData(papername VARCHAR(20), date DATE, time TIME, close INT, volume LONG);//indexek papername, date
-CREATE TABLE User(user_id INT PRIMARY KEY NOT NULL, name VARCHAR(20), email VARCHAR(40), admin BOOLEAN);
+CREATE TABLE StockData(papername VARCHAR, date DATE, time TIME, close INT, volume LONG);
+CREATE INDEX index_pn_date ON StockData (papername, date);
+CREATE TABLE Users (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `password` varchar(60) NOT NULL,
+  `money` bigint(20) DEFAULT '0',
+  `is_admin` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+)
 CREATE TABLE StockWatch(user_id INT PRIMARY KEY NOT NULL, paperName VARCHAR(10));
-CREATE TABLE StockHistory(user_id INT PRIMARY KEY NOT NULL, paperName VARCHAR(10), date INT, time INT, price INT, volume INT);
+CREATE TABLE StockHistory(user_id INT PRIMARY KEY NOT NULL, paperName VARCHAR(10), date DATE, time TIME, price INT, volume LONG);
  
-INSERT INTO User values(1, 'Some Body', 'somebody@something.com', TRUE);
-INSERT INTO User values(2, 'No Body', 'nobody@nothing.com', FALSE);
+INSERT INTO User values(1, 'Some Body', 'somebody@something.com', 'pass', '500000', '1');
+INSERT INTO User values(2, 'No Body', 'nobody@nothing.com', 'pass2', '10000', '0');
