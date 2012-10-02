@@ -3,6 +3,8 @@ package hu.ppke.itk.itkStock.server;
 import java.sql.SQLException;
 import java.util.Random;
 
+import hu.ppke.itk.itkStock.SaveDailyDatas.DailyDataListener;
+import hu.ppke.itk.itkStock.SaveDailyDatas.StockDataManager;
 import hu.ppke.itk.itkStock.dbaccess.BusinessObjectException;
 import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
 import hu.ppke.itk.itkStock.dbaccess.User;
@@ -33,6 +35,22 @@ public class TestMain
 			System.out.println(testuser.getEmail());
 			System.out.println(testuser.getPassword());
 			System.out.println(testuser.isAdmin());
+			
+			///gubkr new
+			StockDataManager stockManager = new StockDataManager(dbc);
+			DailyDataListener listener = new DailyDataListener(stockManager);
+			listener.start();
+			///gubkr
+			boolean interrupted = false;
+			while(!interrupted){
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					interrupted = true;
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			
 			dbc.closeConnection();
 			
