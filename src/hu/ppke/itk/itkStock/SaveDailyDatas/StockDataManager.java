@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import com.sun.tools.javac.util.Pair;
+import hu.ppke.itk.itkStock.util.Pair;
 
 /**
  * Kötés manager osztály
@@ -28,7 +28,7 @@ public class StockDataManager {
 	protected Pair<Date, Date> s_interval; /// Catchelt intervallum
 	protected StockDataSaver Sdatasaver = null; ///dbManager
 	protected List<StockDataRecord> datalist = new ArrayList<StockDataRecord>(); ///átmeneti tár a beolvasáshoz
-	
+
 	/**
 	 * StockDate+StockTime To Date
 	 * @param date StockDate
@@ -40,7 +40,7 @@ public class StockDataManager {
 		//Depricated de nem tudok vele mit tenni. Nem én implementáltam a használt típusokat.
 		return new Date(date.getYear(), date.getMonth(), date.getDay(), time.getHour(), time.getMinute(), time.getSecond());
 	}
-	
+
 	/**
 	 * @param dbc dbConnector ezt kívülről kapja, hogy a közöset használja. Nem figyel a bezárásra. Idő elötti bezárása —> SQLExc
 	 * @throws SQLException
@@ -49,7 +49,7 @@ public class StockDataManager {
 		super();
 		Sdatasaver = new StockDataSaver(dbc);
 	}
-	
+
 	/**
 	 * Beolvasott adatok intervallumának megállapítása, adatok rögzítése és Catchelése
 	 * Átmeneti tár törlése
@@ -75,7 +75,7 @@ public class StockDataManager {
 		this.datalist = new ArrayList<StockDataRecord>();
 		return true;
 	}
-	
+
 	/**
 	 * Beolvasott kötés rögzítése az átmeneti tárban
 	 * @param papername
@@ -86,7 +86,7 @@ public class StockDataManager {
 	synchronized public void add(String papername, StockDate date, StockTime time, Transaction transaction){
 		datalist.add(new StockDataRecord(Sdatasaver, 0, papername, date, time, transaction));
 	}
-	
+
 
 	/**
 	 * Kőtás rögzítése az adatbázisban és a Catcheben
@@ -98,21 +98,21 @@ public class StockDataManager {
 		if(isInCatche(record.getPapername(), record.getDate(), record.getTime(), record.getTransaction())){
 			return false;
 		}
-		
+
 		try {
 			record.create();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		if (!pushToCatche(record.getPapername(), record.getDate(), record.getTime(), record.getTransaction())){
 			throw new ImplementationLogicException("Same transaction in same time!");
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Catchelt kötések intervallumának frissítése
 	 * @param start hozzáadott intervallum kezdete
@@ -129,7 +129,7 @@ public class StockDataManager {
 			this.s_interval=new Pair<Date, Date>(start, stop);
 		}
 	}
-	
+
 	/**
 	 * Kötés hozzáadása a Catchehez
 	 * @param papername
@@ -160,8 +160,8 @@ public class StockDataManager {
 		}
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Benne van ez a kötés a Catcheben?
 	 * @param papername
@@ -182,7 +182,7 @@ public class StockDataManager {
 		}
 		return false;
 	}
-	
+
 	/**Árfolyamfigyelő értesítése
 	 * @param updatedStocks Megváltozott kötések nevei
 	 */
