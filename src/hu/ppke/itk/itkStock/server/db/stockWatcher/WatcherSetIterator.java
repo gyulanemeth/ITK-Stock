@@ -1,10 +1,10 @@
-package hu.ppke.itk.itkStock.watcher;
+package hu.ppke.itk.itkStock.server.db.stockWatcher;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Ezzel az iterátorral Watcher tupleket tartalmazó ResultSeten lehet végigmenni.
+ * Ezzel az iterï¿½torral Watcher tupleket tartalmazï¿½ ResultSeten lehet vï¿½gigmenni.
  */
 public class WatcherSetIterator extends BusinessObjectSetIterator<Watcher> {
 

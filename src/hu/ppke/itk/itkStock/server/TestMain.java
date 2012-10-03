@@ -5,10 +5,10 @@ import java.util.Random;
 
 import hu.ppke.itk.itkStock.SaveDailyDatas.DailyDataListener;
 import hu.ppke.itk.itkStock.SaveDailyDatas.StockDataManager;
-import hu.ppke.itk.itkStock.dbaccess.BusinessObjectException;
-import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
-import hu.ppke.itk.itkStock.dbaccess.User;
-import hu.ppke.itk.itkStock.dbaccess.UserManager;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
+import hu.ppke.itk.itkStock.server.db.user.User;
+import hu.ppke.itk.itkStock.server.db.user.UserManager;
 
 public class TestMain
 {

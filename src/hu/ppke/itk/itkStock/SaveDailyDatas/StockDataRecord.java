@@ -1,11 +1,11 @@
 package hu.ppke.itk.itkStock.SaveDailyDatas;
 
-import hu.ppke.itk.itkStock.dbaccess.AbstractManager;
-import hu.ppke.itk.itkStock.dbaccess.BusinessObject;
-import hu.ppke.itk.itkStock.dbaccess.BusinessObjectException;
-import hu.ppke.itk.itkStock.stockdata.StockDate;
-import hu.ppke.itk.itkStock.stockdata.StockTime;
-import hu.ppke.itk.itkStock.stockdata.Transaction;
+import hu.ppke.itk.itkStock.server.db.dbAccess.AbstractManager;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObject;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
+import hu.ppke.itk.itkStock.server.db.historicData.StockDate;
+import hu.ppke.itk.itkStock.server.db.historicData.StockTime;
+import hu.ppke.itk.itkStock.server.db.historicData.Transaction;
 
 import java.sql.SQLException;
 

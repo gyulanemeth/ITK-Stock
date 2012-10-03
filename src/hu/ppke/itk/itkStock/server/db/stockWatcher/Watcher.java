@@ -1,22 +1,22 @@
-package hu.ppke.itk.itkStock.watcher;
+package hu.ppke.itk.itkStock.server.db.stockWatcher;
 
 import java.sql.SQLException;
 
-import hu.ppke.itk.itkStock.dbaccess.BusinessObject;
-import hu.ppke.itk.itkStock.dbaccess.BusinessObjectException;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObject;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
 
 /**
- * Árfolyamfigyelú osztály. Feladata, hogy egy meghatározott értékpapírt figyeljen. Definoálni
- * lehet felsõ és alsó határt.
+ * ï¿½rfolyamfigyelï¿½ osztï¿½ly. Feladata, hogy egy meghatï¿½rozott ï¿½rtï¿½kpapï¿½rt figyeljen. Definoï¿½lni
+ * lehet felsï¿½ ï¿½s alsï¿½ hatï¿½rt.
  * 
  * @see WatcherManager
  */
 public class Watcher extends BusinessObject {
 
 	/**
-	 * Ez az osztály tartalmazza a felsõ és alsó határ idjét.
+	 * Ez az osztï¿½ly tartalmazza a felsï¿½ ï¿½s alsï¿½ hatï¿½r idjï¿½t.
 	 * 
-	 * @author Kozák Csaba - kozcs - XJ6JXU
+	 * @author Kozï¿½k Csaba - kozcs - XJ6JXU
 	 *
 	 */
 	public static class BoundTypes {

@@ -1,8 +1,8 @@
 package hu.ppke.itk.itkStock.SaveDailyDatas;
 
-import hu.ppke.itk.itkStock.stockdata.StockDate;
-import hu.ppke.itk.itkStock.stockdata.StockTime;
-import hu.ppke.itk.itkStock.stockdata.Transaction;
+import hu.ppke.itk.itkStock.server.db.historicData.StockDate;
+import hu.ppke.itk.itkStock.server.db.historicData.StockTime;
+import hu.ppke.itk.itkStock.server.db.historicData.Transaction;
 
 import java.io.IOException;
 import java.util.Date;

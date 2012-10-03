@@ -1,4 +1,8 @@
-package hu.ppke.itk.itkStock.dbaccess;
+package hu.ppke.itk.itkStock.server.db.user;
+
+import hu.ppke.itk.itkStock.server.db.dbAccess.AbstractManager;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

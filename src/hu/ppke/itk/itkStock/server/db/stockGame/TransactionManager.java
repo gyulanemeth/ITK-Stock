@@ -1,8 +1,8 @@
-package hu.ppke.itk.itkStock.game;
+package hu.ppke.itk.itkStock.server.db.stockGame;
 
-import hu.ppke.itk.itkStock.dbaccess.BusinessObjectException;
-import hu.ppke.itk.itkStock.dbaccess.User;
-import hu.ppke.itk.itkStock.dbaccess.UserManager;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
+import hu.ppke.itk.itkStock.server.db.user.User;
+import hu.ppke.itk.itkStock.server.db.user.UserManager;
 
 import java.sql.SQLException;
 

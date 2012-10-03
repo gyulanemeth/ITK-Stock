@@ -1,16 +1,16 @@
-package hu.ppke.itk.itkStock.watcher;
+package hu.ppke.itk.itkStock.server.db.stockWatcher;
 
-import hu.ppke.itk.itkStock.dbaccess.BusinessObject;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
 /**
- * Ez egy wrapper class a java.sql.ResultSet-re. A kliensek könnyen végig tudnak iterálni egy
- * lekérdezés eredményén, és közvetlenül a BusinessObject-el tudnak foglalkozni.
+ * Ez egy wrapper class a java.sql.ResultSet-re. A kliensek kï¿½nnyen vï¿½gig tudnak iterï¿½lni egy
+ * lekï¿½rdezï¿½s eredmï¿½nyï¿½n, ï¿½s kï¿½zvetlenï¿½l a BusinessObject-el tudnak foglalkozni.
  * 
- * @param <T> A saját BusinessObject leszármazottad, amire az iterátort használod.
+ * @param <T> A sajï¿½t BusinessObject leszï¿½rmazottad, amire az iterï¿½tort hasznï¿½lod.
  */
 public abstract class BusinessObjectSetIterator<T extends BusinessObject> implements Iterator<BusinessObject> {
 

@@ -1,4 +1,4 @@
-package hu.ppke.itk.itkStock.stockdata;
+package hu.ppke.itk.itkStock.server.db.historicData;
 
 
 /**

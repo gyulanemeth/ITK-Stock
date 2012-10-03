@@ -1,4 +1,4 @@
-package hu.ppke.itk.itkStock.server.dbCreate;
+package hu.ppke.itk.itkStock.server.db.initDb;
 
 import hu.ppke.itk.itkStock.server.ServerSettings;
 
@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 
-public class Upload {
+public class InitDb {
 	private static Connection conn = null;
 
 	private static String sqlCommandsPath = "SqlCommands.txt";

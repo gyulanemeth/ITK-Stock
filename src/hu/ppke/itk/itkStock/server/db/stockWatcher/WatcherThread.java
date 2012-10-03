@@ -1,14 +1,14 @@
-package hu.ppke.itk.itkStock.watcher;
+package hu.ppke.itk.itkStock.server.db.stockWatcher;
 
-import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
 
 /**
- * Konkrétan az árfolyamok figyelését megvalósító osztály. Egyelõre minden user
- * minden figyelõjén végigmegy, és ha túllépést talál, jelez.
+ * Konkrï¿½tan az ï¿½rfolyamok figyelï¿½sï¿½t megvalï¿½sï¿½tï¿½ osztï¿½ly. Egyelï¿½re minden user
+ * minden figyelï¿½jï¿½n vï¿½gigmegy, ï¿½s ha tï¿½llï¿½pï¿½st talï¿½l, jelez.
  */
 public class WatcherThread extends Thread {
 
-	// 2.3 -ra vár
+	// 2.3 -ra vï¿½r
 	// Collection stocksInMemory;
 	// Collection UsersInMemory;
 	DatabaseConnector dc = new DatabaseConnector();

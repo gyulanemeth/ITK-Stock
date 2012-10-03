@@ -1,9 +1,9 @@
 package hu.ppke.itk.itkStock.SaveDailyDatas;
 
-import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
-import hu.ppke.itk.itkStock.stockdata.StockDate;
-import hu.ppke.itk.itkStock.stockdata.StockTime;
-import hu.ppke.itk.itkStock.stockdata.Transaction;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
+import hu.ppke.itk.itkStock.server.db.historicData.StockDate;
+import hu.ppke.itk.itkStock.server.db.historicData.StockTime;
+import hu.ppke.itk.itkStock.server.db.historicData.Transaction;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

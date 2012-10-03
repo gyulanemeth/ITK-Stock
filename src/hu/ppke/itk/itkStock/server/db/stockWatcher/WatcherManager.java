@@ -1,14 +1,15 @@
-package hu.ppke.itk.itkStock.watcher;
+package hu.ppke.itk.itkStock.server.db.stockWatcher;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import hu.ppke.itk.itkStock.dbaccess.AbstractManager;
-import hu.ppke.itk.itkStock.dbaccess.BusinessObjectException;
-import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
+
+import hu.ppke.itk.itkStock.server.db.dbAccess.AbstractManager;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
 
 /**
- * Az árfolyamfigyelõket kezelõ osztály.
+ * Az ï¿½rfolyamfigyelï¿½ket kezelï¿½ osztï¿½ly.
  */
 public class WatcherManager extends AbstractManager<Watcher> {
 

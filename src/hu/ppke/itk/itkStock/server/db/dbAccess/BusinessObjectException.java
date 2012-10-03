@@ -1,4 +1,4 @@
-package hu.ppke.itk.itkStock.dbaccess;
+package hu.ppke.itk.itkStock.server.db.dbAccess;
 
 /**
  * 'BusinessObject'-ekre, es azok 'Manager' osztalyaira vonatkozo kivetelosztaly.

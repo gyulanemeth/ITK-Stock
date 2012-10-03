@@ -1,4 +1,7 @@
-package hu.ppke.itk.itkStock.dbaccess;
+package hu.ppke.itk.itkStock.server.db.user;
+
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObject;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
 
 import java.sql.SQLException;
 

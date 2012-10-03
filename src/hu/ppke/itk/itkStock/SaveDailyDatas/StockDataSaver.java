@@ -3,9 +3,9 @@ package hu.ppke.itk.itkStock.SaveDailyDatas;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import hu.ppke.itk.itkStock.dbaccess.AbstractManager;
-import hu.ppke.itk.itkStock.dbaccess.BusinessObjectException;
-import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
+import hu.ppke.itk.itkStock.server.db.dbAccess.AbstractManager;
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
 
 /**
  * Kötés adabázisban történő rögzítéséért felelős Manager osztály

@@ -1,9 +1,9 @@
-package hu.ppke.itk.itkStock.stockdata;
+package hu.ppke.itk.itkStock.server.db.historicData;
 
 import java.util.*;
 import java.sql.*;
 
-import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
 
 public class StockData {
 	/**
@@ -78,7 +78,7 @@ public class StockData {
 	*/
 	protected static Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > > fetch(String[] tickers, StockDate from, StockDate to) throws SQLException {
 		Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction> > > Result = new HashMap<String, SortedMap<StockDate, SortedMap<StockTime, Transaction>>>();
-		DatabaseConnector dbc = new DatabaseConnector(3306, "root", "", "127.0.0.1", "itkstock");
+		DatabaseConnector dbc = new DatabaseConnector();
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		try {

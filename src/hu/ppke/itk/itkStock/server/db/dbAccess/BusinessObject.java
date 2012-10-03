@@ -1,4 +1,4 @@
-package hu.ppke.itk.itkStock.dbaccess;
+package hu.ppke.itk.itkStock.server.db.dbAccess;
 
 import java.sql.SQLException;
 
