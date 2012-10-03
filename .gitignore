@@ -1,6 +1,9 @@
 # contents of bin in general
 bin/*
 
+# contents of data
+data/*
+
 # class files
 *.class
 
