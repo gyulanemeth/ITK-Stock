@@ -96,28 +96,28 @@ public class UserManager extends AbstractManager<User>
 	{
 		this.authenticateUser.setString(1, username);
 		this.authenticateUser.setString(2, password);
-		this._resultSet = this.authenticateUser.executeQuery();
-		this._resultSet.first();
+		this.resultSet = this.authenticateUser.executeQuery();
+		this.resultSet.first();
 		
-		return this._resultSet.getBoolean(1); 
+		return this.resultSet.getBoolean(1); 
 	}
 	
 	public boolean checkUserExistenceByName(String username) throws SQLException
 	{
 		this.checkUserExistenceByName.setString(1, username);
-		this._resultSet = this.checkUserExistenceByName.executeQuery();
-		this._resultSet.first();
+		this.resultSet = this.checkUserExistenceByName.executeQuery();
+		this.resultSet.first();
 		
-		return this._resultSet.getBoolean(1); 
+		return this.resultSet.getBoolean(1); 
 	}
 	
 	public boolean checkUserExistenceById(int id) throws SQLException
 	{
 		this.checkUserExistenceById.setInt(1, id);
-		this._resultSet = this.checkUserExistenceById.executeQuery();
-		this._resultSet.first();
+		this.resultSet = this.checkUserExistenceById.executeQuery();
+		this.resultSet.first();
 		
-		return this._resultSet.getBoolean(1); 
+		return this.resultSet.getBoolean(1); 
 	}
 	
 	public void promoteAdmin(String username) throws SQLException
@@ -149,18 +149,18 @@ public class UserManager extends AbstractManager<User>
 			throw new BusinessObjectException("User with id = " + id + " does not exist.");
 		
 		this.getUserById.setInt(1, id);
-		this._resultSet = this.getUserById.executeQuery();
+		this.resultSet = this.getUserById.executeQuery();
 		
-		if ( !this._resultSet.first() )
+		if ( !this.resultSet.first() )
 			return null;
 		
 		User tempuser = new User(this, id);
 		
 		tempuser.setData
-					( this._resultSet.getString(2)
-					, this._resultSet.getString(3)
-					, this._resultSet.getString(4)
-					, this._resultSet.getBoolean(5) );
+					( this.resultSet.getString(2)
+					, this.resultSet.getString(3)
+					, this.resultSet.getString(4)
+					, this.resultSet.getBoolean(5) );
 		
 		return tempuser;
 	}
@@ -171,20 +171,20 @@ public class UserManager extends AbstractManager<User>
 			throw new BusinessObjectException("User with username = " + username + " does not exist.");
 		
 		this.getUserByName.setString(1, username);
-		this._resultSet = this.getUserByName.executeQuery();
+		this.resultSet = this.getUserByName.executeQuery();
 		
-		if ( !this._resultSet.first() )
+		if ( !this.resultSet.first() )
 			return null;
 		
 		User tempuser = new User(this, username);
 	
 		tempuser.setData
-					( this._resultSet.getString(2)
-					, this._resultSet.getString(3)
-					, this._resultSet.getString(4)
-					, this._resultSet.getBoolean(5) );
+					( this.resultSet.getString(2)
+					, this.resultSet.getString(3)
+					, this.resultSet.getString(4)
+					, this.resultSet.getBoolean(5) );
 		
-		tempuser.setId(this._resultSet.getInt(1));
+		tempuser.setId(this.resultSet.getInt(1));
 		
 		return tempuser;
 	}

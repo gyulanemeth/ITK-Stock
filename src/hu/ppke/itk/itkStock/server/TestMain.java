@@ -12,10 +12,6 @@ import hu.ppke.itk.itkStock.server.db.user.UserManager;
 
 public class TestMain
 {
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args)
 	{
 		DatabaseConnector dbc = new DatabaseConnector();
@@ -36,11 +32,12 @@ public class TestMain
 			System.out.println(testuser.getPassword());
 			System.out.println(testuser.isAdmin());
 			
-			///gubkr new
-			StockDataManager stockManager = new StockDataManager(dbc);
-			DailyDataListener listener = new DailyDataListener(stockManager);
-			listener.start();
-			///gubkr
+			//kikommenteltem, mert nem tudom, hogy hol van definialva a Pair.
+//			///gubkr new
+//			StockDataManager stockManager = new StockDataManager(dbc);
+//			DailyDataListener listener = new DailyDataListener(stockManager);
+//			listener.start();
+//			///gubkr
 			boolean interrupted = false;
 			while(!interrupted){
 				try {
@@ -57,21 +54,16 @@ public class TestMain
 		}
 		catch (SQLException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (ClassNotFoundException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (BusinessObjectException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("ITK-Stock server");
-		System.out.println("test");
 	}
-
 }

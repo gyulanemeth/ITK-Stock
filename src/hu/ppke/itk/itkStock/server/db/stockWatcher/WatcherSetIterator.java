@@ -1,5 +1,7 @@
 package hu.ppke.itk.itkStock.server.db.stockWatcher;
 
+import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectSetIterator;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

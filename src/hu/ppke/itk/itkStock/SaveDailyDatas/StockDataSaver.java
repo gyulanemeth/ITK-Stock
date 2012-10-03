@@ -47,10 +47,10 @@ public class StockDataSaver extends AbstractManager<StockDataRecord> {
 		this.checkRecordExistence.setString(3, time);
 		this.checkRecordExistence.setString(4, close);
 		this.checkRecordExistence.setString(5, volume);
-		this._resultSet = this.checkRecordExistence.executeQuery();
-		this._resultSet.first();
+		this.resultSet = this.checkRecordExistence.executeQuery();
+		this.resultSet.first();
 		
-		return this._resultSet.getBoolean(1); 
+		return this.resultSet.getBoolean(1); 
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 
 	public WatcherManager(ResultSet rs) {
 		super(new DatabaseConnector());
-		_resultSet = rs;
+		resultSet = rs;
 	}
 
 	@Override
@@ -62,9 +62,9 @@ public class WatcherManager extends AbstractManager<Watcher> {
 			throw new BusinessObjectException("User with id = " + id + " does not exist.");
 
 		getWatcherById.setInt(1, id);
-		_resultSet = getWatcherById.executeQuery();
+		resultSet = getWatcherById.executeQuery();
 
-		if (!this._resultSet.first())
+		if (!this.resultSet.first())
 			return null;
 
 		return getWatcherFromSet();
@@ -119,14 +119,14 @@ public class WatcherManager extends AbstractManager<Watcher> {
 
 	public boolean checkUserExistenceById(int id) throws SQLException {
 		checkWatcherExistenceById.setInt(1, id);
-		_resultSet = checkWatcherExistenceById.executeQuery();
+		resultSet = checkWatcherExistenceById.executeQuery();
 
-		return _resultSet.first();
+		return resultSet.first();
 	}
 
 	public Watcher getWatcherFromSet() throws SQLException {
-		Watcher ret = new Watcher(this, _resultSet.getInt(1));
-		ret.setData(_resultSet.getString(2), _resultSet.getString(3), _resultSet.getFloat(4), _resultSet.getInt(5));
+		Watcher ret = new Watcher(this, resultSet.getInt(1));
+		ret.setData(resultSet.getString(2), resultSet.getString(3), resultSet.getFloat(4), resultSet.getInt(5));
 
 		return ret;
 	}

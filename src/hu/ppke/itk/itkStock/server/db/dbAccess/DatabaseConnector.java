@@ -31,7 +31,7 @@ public class DatabaseConnector {
 	public synchronized void initConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.jdbc.Driver");
 		String url = ServerSettings.INSTANCE.getDbUrl();
-		String user = ServerSettings.INSTANCE.getDbUrl();
+		String user = ServerSettings.INSTANCE.getDbUser();
 		String pass = ServerSettings.INSTANCE.getDbPass();
 		this.connection = DriverManager.getConnection(url, user, pass);
 		this.initialized = true;

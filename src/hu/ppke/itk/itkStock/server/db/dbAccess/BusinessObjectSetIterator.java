@@ -1,6 +1,5 @@
-package hu.ppke.itk.itkStock.server.db.stockWatcher;
+package hu.ppke.itk.itkStock.server.db.dbAccess;
 
-import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

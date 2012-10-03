@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public abstract class AbstractManager<T extends BusinessObject>
 {
 	protected DatabaseConnector dbConnector;
-	protected volatile ResultSet _resultSet = null;
+	protected volatile ResultSet resultSet = null;
 	
 	public AbstractManager(DatabaseConnector dbConnector)
 	{
