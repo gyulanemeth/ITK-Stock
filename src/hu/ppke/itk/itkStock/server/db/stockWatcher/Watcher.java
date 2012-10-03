@@ -20,7 +20,7 @@ public class Watcher extends BusinessObject {
 	 *
 	 */
 	public static class BoundTypes {
-		public static final int UPPER_BOUND = 1, LOWER_BOUND = 0;
+		public static final int UPPER_BOUND = 1, LOWER_BOUND = -1;
 	}
 
 	private String userName;

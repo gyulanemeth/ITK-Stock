@@ -24,19 +24,7 @@ RETURNS BOOLEAN
 	  
 	  SELECT price FROM stocks WHERE other_stockname = stockname INTO stockprice;
 	  
-	  IF boundtype = 1 THEN
-		IF boundvalue > price THEN
-			ret = TRUE;
-		ELSE
-			ret = FALSE;
-	    END IF
-	  ELSE
-		IF boundvalue < price THEN
-			SET ret = TRUE;
-		ELSE
-			SET ret = FALSE;
-		END IF
-	  END IF
+	  SET ret = boundtype * stockprice < boundvalue * boundtype;
 	  
 	  RETURN ret;
 	  
