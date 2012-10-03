@@ -24,7 +24,7 @@ public class DatabaseConnector
 	private static final String defaultUsername = "root";
 	private static final String defaultPassword = "root";
 	private static final String defaultServerAddr = "localhost";
-	private static final String defaultDatabase = "stockserver";
+	private static final String defaultDatabase = "test";
 	
 	private int portnumber = defaultPortnumber;
 	private String username = new String(defaultUsername);
