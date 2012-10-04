@@ -69,8 +69,8 @@ public class StockDataSaver extends AbstractManager<StockDataRecord> {
 	@Override
 	public void create(StockDataRecord bo) throws SQLException, BusinessObjectException {
 		//System.out.println(bo.getPapername().toString()+";"+bo.getDate().toString()+";"+bo.getTime().toString()+";"+Double.toString(bo.getClose())+";"+Double.toString(bo.getVolume()));
-		if (this.checkRecordExistence(bo.getPapername().toString(), bo.getDate().toString(), bo.getTime().toString(), Double.toString(bo.getClose()), Double.toString(bo.getVolume())) )
-			throw new BusinessObjectException("This record is already exists.");
+		/*if (this.checkRecordExistence(bo.getPapername().toString(), bo.getDate().toString(), bo.getTime().toString(), Double.toString(bo.getClose()), Double.toString(bo.getVolume())) )
+			throw new BusinessObjectException("This record is already exists.");*/
 		this.addRecord( bo.getPapername().toString(), bo.getDate().toString(), bo.getTime().toString(), Double.toString(bo.getClose()), Double.toString(bo.getVolume()) );
 		bo.get();
 		
