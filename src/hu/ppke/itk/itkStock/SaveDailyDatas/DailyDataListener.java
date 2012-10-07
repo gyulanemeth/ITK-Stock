@@ -123,7 +123,7 @@ public class DailyDataListener extends Thread {
 						Integer.parseInt(cleanNumber(datas_of_line[3])),
 						Integer.parseInt(cleanNumber(datas_of_line[5])));
 			}
-
+			//System.out.println(Sdate.toString()+" "+Stime.toString());
 			this.manager.add(datas_of_line[1], Sdate, Stime, Stransaction);
 		}
 		this.manager.comit();
