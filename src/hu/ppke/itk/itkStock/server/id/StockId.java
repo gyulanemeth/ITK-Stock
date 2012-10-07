@@ -1,14 +1,39 @@
 package hu.ppke.itk.itkStock.server.id;
 
+import hu.ppke.itk.itkStock.SaveDailyDatas.StockDataManager;
+import hu.ppke.itk.itkStock.server.db.historicData.StockData;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 2 hashmap-et használó osztály, tárolja a kulcs-érték és az érték-kulcs párokat
+ * Az initializeIdentifiers metódussal kell beállítani a kezdőértékeket
+ * A put és getId metódusokkal is lehet új kulcs-érték párokat eltárolni
+ */
 public class StockId {
 	
-	private static Map<Short,String> keyToValue = new HashMap<>();
-	private static Map<String,Short> valueToKey = new HashMap<>();
-	private static short key = 1;
+	private Map<Short,String> keyToValue = new HashMap<>();
+	private Map<String,Short> valueToKey = new HashMap<>();
+	private short key = 1;
+	
+	/**
+	 * Default constructor
+	 * Call initializeIdentifiers/put/getId to add values
+	 */
+	public StockId(){
+		
+	}
+	
+	/**
+	 * Constructor with String array, fills up the hashmaps
+	 * @param names
+	 * Name of stocks
+	 */
+	public StockId(String[] names){
+		initializeIdentifiers(names);
+	}
 	
 	/**
 	 * Initializes the maps with stock names
@@ -17,7 +42,10 @@ public class StockId {
 	 * @return
 	 * Returns a set of keys
 	 */
-	public static Set<Short> initializeIdentifiers(String[] names){
+	public Set<Short> initializeIdentifiers(String[] names){
+		keyToValue.clear();
+		valueToKey.clear();
+		key = 1;
 		for(String value : names){
 			put(value);
 		}
@@ -26,18 +54,33 @@ public class StockId {
 	
 	/**
 	 * Gets the identifier of a stock name
-	 * 
+	 * @param value
+	 * Name of stock
+	 * @param putNew
+	 * Flag to put new value if it wasn't found
+	 * @return
+	 * Returns the key assigned to the stock
+	 * Return 0 if value was not found and putNew is false
+	 */
+	public short getId(String value, boolean putNew){
+		if(valueToKey.containsKey(value)){
+			return valueToKey.get(value);
+		}else if (putNew){
+			return put(value);
+		}
+		return 0;
+	}
+	
+	/**
+	 * Gets identifier of a stock name
 	 * @param value
 	 * Name of stock
 	 * @return
-	 * Returns the key assigned to the stock
+	 * Returns the key assigned of the stock
+	 * Returns 0 if value was not found
 	 */
-	public static short getID(String value){
-		if(valueToKey.containsKey(value)){
-			return valueToKey.get(value);
-		}else{
-			return put(value);
-		}
+	public short getId(String value){
+		return getId(value,false);
 	}
 	
 	/**
@@ -47,7 +90,7 @@ public class StockId {
 	 * @return
 	 * Returns the key assigned to the stock
 	 */
-	public static short put(String value){
+	public short put(String value){
 		if(keyToValue.containsValue(value) == false){
 			keyToValue.put(key, value);
 			return valueToKey.put(value, key++);
@@ -62,7 +105,7 @@ public class StockId {
 	 * @return
 	 * Name of stock
 	 */
-	public static String getValue(short key){
+	public String getValue(short key){
 		return keyToValue.get(key);
 	}
 	
