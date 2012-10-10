@@ -1,17 +1,22 @@
 package hu.ppke.itk.itkStock.server.db.stockGame;
 
+import hu.ppke.itk.itkStock.server.db.dbAccess.AbstractManager;
 import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
 import hu.ppke.itk.itkStock.server.db.user.User;
 import hu.ppke.itk.itkStock.server.db.user.UserManager;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class TransactionManager {
+public class TransactionManager extends AbstractManager<Transaction> {
 	
 	private UserManager userManager ;
+	//private StockManager stockManager ;
 	
 	private double fixTransactionCost ;
 	private double percentTransactionCost ;
+	private PreparedStatement addTransaction;
 	
 	/**
 	 * Végrehajtunk egy tranzakciót
@@ -30,7 +35,7 @@ public class TransactionManager {
 			throw new BusinessObjectException("Invalid user id") ;
 		}
 
-		// TODO: élő árfolyam lekérdezése (2.3-as feladatra vár)
+		// TODO: élő árfolyam lekérdezése (másik feladatra vár)
 		// double price = getPrice(paperName) ;
 		double price = 150 ;
 		
@@ -47,10 +52,7 @@ public class TransactionManager {
 		// DatabaseConnector.startTransaction() ;
 		
 		// Tranzakció bejegyzése
-		// TODO: védelem SQL injection ellen (paperName != 'DROP TABLE' stb.)
-		
-		// "INSERT INTO StockHistory VALUES (" + userid + ", " + paperName + ", " + 
-		//   date + ", " + time + ", " + price + ", " + volume + ");" ;
+		// TODO
 		
 		// Usertől pénzösszeg levonása
 		User user = userManager.get(userid) ;
@@ -124,13 +126,37 @@ public class TransactionManager {
 	/**
 	 * A tranzakciómenedzserünk konstruktora, szüksége van a user managerre
 	 * @param userManager
+	 * @throws SQLException 
 	 */
-	public TransactionManager(UserManager userManager)
+	public TransactionManager(DatabaseConnector dbConnector) throws SQLException
 	{
+		super(dbConnector) ;
+		userManager = new UserManager(dbConnector) ;
+		// stockManager = new StockManager(dbConnector) ;
+		
 		// TODO: Jutalékok adatbázisban tárolása
 		fixTransactionCost = 10 ;
 		percentTransactionCost = 0.01 ;
 
-		this.userManager = userManager ;
+		addTransaction = this.dbConnector.prepareStatement("INSERT INTO StockHistory VALUES (?, ?, ?, ?, ?, ?);") ;
+	}
+
+	@Override
+	public void update(Transaction bo) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Transaction get(int id) throws SQLException, BusinessObjectException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void create(Transaction bo) throws SQLException,
+			BusinessObjectException {
+		// TODO Auto-generated method stub
+		
 	}
 }

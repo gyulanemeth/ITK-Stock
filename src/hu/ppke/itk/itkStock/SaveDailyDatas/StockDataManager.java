@@ -1,10 +1,11 @@
 package hu.ppke.itk.itkStock.SaveDailyDatas;
 
-import hu.ppke.itk.itkStock.dbaccess.DatabaseConnector;
-import hu.ppke.itk.itkStock.stockdata.StockData;
-import hu.ppke.itk.itkStock.stockdata.StockDate;
-import hu.ppke.itk.itkStock.stockdata.StockTime;
-import hu.ppke.itk.itkStock.stockdata.Transaction;
+import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
+import hu.ppke.itk.itkStock.server.db.historicData.StockData;
+import hu.ppke.itk.itkStock.server.db.historicData.StockDate;
+import hu.ppke.itk.itkStock.server.db.historicData.StockTime;
+import hu.ppke.itk.itkStock.server.db.historicData.Transaction;
+import hu.ppke.itk.itkStock.util.Pair;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import com.sun.tools.javac.util.Pair;
 
 /**
  * Kötés manager osztály Ez felel a kötések adatbázisban rögzítésélrt és a Cache
