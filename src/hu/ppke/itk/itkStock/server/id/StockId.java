@@ -14,8 +14,8 @@ import java.util.Set;
  */
 public class StockId {
 	
-	private Map<Short,String> keyToValue = new HashMap<>();
-	private Map<String,Short> valueToKey = new HashMap<>();
+	private Map<Short,String> keyToValue = new HashMap<Short, String>();
+	private Map<String,Short> valueToKey = new HashMap<String, Short>();
 	private short key = 1;
 	
 	/**
