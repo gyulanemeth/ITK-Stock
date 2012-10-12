@@ -109,14 +109,9 @@ public class StockData {
 			Transaction value = null;
 			while(rs.next()) {
 				stock = rs.getString("papername");
-				date = rs.getInt("date");
-				time = rs.getInt("time");
-				price = rs.getInt("close");
-				volume = rs.getInt("volume");
-
-				key = new StockDate( date/10000, (date % 10000)/100, date % 100);
-				timekey = new StockTime( time/10000, (time % 10000)/100, time % 100 );
-				value = new Transaction(price, volume);
+				key = new StockDate( rs.getInt("date") );
+				timekey = new StockTime( rs.getInt("time") );
+				value = new Transaction( rs.getInt("close"), rs.getInt("volume") );
 				if( Result.containsKey(stock) ) {
 					tree = Result.get(stock);
 					if( tree.containsKey(key) ) {

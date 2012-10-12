@@ -9,8 +9,8 @@ DROP TRIGGER IF EXISTS watchers_update;
  
 CREATE TABLE StockData (
 	papername VARCHAR (32),
-	date DATE,
-	time TIME,
+	date int,
+	time int,
 	price DOUBLE,
 	volume LONG,
 	INDEX (papername, date),

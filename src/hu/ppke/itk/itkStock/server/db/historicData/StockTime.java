@@ -10,6 +10,13 @@ public class StockTime implements Comparable<StockTime> {
 	private final byte minute;
 	private final byte second;
 
+
+	public StockTime(int hms) {
+		this.hour = (byte)( hms/10000 );
+		this.minute = (byte)( (hms%10000)/100 );
+		this.second = (byte)( hms%100 );
+	}
+
 	public StockTime(int hour, int minute, int second) {
 		this.hour = (byte)hour;
 		this.minute = (byte)minute;

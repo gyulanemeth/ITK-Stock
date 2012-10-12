@@ -9,6 +9,12 @@ public class StockDate implements Comparable<StockDate> {
 	private final byte month;
 	private final byte day;
 
+	public StockDate(int ymd) {
+		this.year = (short)( ymd/10000 );
+		this.month = (byte)( (ymd%10000)/100 );
+		this.day = (byte)( ymd%100 );
+	}
+
 	public StockDate(int year, int month, int day) {
 		this.year = (short)year;
 		this.month = (byte)month;
