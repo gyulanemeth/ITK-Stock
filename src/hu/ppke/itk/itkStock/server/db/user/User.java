@@ -57,7 +57,7 @@ public class User extends BusinessObject
 		if ( this.id != 0 )
 			temp = (User) this.manager.get(this.id);
 		else if ( this.username != null )
-			temp = (User) ( (UserManager) this.manager ).get(this.username);
+			temp = ( (UserManager) this.manager ).get(this.username);
 		else
 			throw new BusinessObjectException("Neither user id, nor username specified.");
 		
