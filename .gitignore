@@ -12,3 +12,6 @@ data/*
 
 # Apple thing.
 .DS_Store
+
+# Eclipse thing
+.settings
