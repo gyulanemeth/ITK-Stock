@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:server_config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ServerConfig.xsd">
+  <connection>
+    <port>3306</port>
+  </connection>
+  
+  <db>
+    <dbHost>localhost</dbHost>
+    <dbName>itkStock</dbName>
+    <dbUser>itkStock</dbUser>
+    <dbPass>itkStock</dbPass>
+  </db>
+</xsi:server_config>
