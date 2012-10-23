@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Ezzel az iter�torral Watcher tupleket tartalmaz� ResultSeten lehet v�gigmenni.
+ * This can iterate over a result set of watchers.
  */
 public class WatcherSetIterator extends BusinessObjectSetIterator<Watcher> {
 

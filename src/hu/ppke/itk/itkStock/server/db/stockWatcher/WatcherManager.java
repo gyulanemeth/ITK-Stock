@@ -9,7 +9,9 @@ import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
 import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
 
 /**
- * Az �rfolyamfigyel�ket kezel� oszt�ly.
+ * This class is handling the database operations for watchers.
+ * 
+ * @see Watcher
  */
 public class WatcherManager extends AbstractManager<Watcher> {
 

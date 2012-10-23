@@ -6,18 +6,15 @@ import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObject;
 import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
 
 /**
- * �rfolyamfigyel� oszt�ly. Feladata, hogy egy meghat�rozott �rt�kpap�rt figyeljen. Defino�lni
- * lehet fels� �s als� hat�rt.
+ * Current price watcher class. Its task is to watch the price of a given stock.
+ * One can define upper or lower bound.
  * 
  * @see WatcherManager
  */
 public class Watcher extends BusinessObject {
 
 	/**
-	 * Ez az oszt�ly tartalmazza a fels� �s als� hat�r idj�t.
-	 * 
-	 * @author Koz�k Csaba - kozcs - XJ6JXU
-	 *
+	 * This class holds the id for lower/upper bounds.
 	 */
 	public static class BoundTypes {
 		public static final int UPPER_BOUND = 1, LOWER_BOUND = -1;
@@ -56,7 +53,8 @@ public class Watcher extends BusinessObject {
 	@Override
 	public void update() throws SQLException, BusinessObjectException {
 		if (!this.identified)
-			throw new BusinessObjectException("Must identify BusinessObject before updating in database.");
+			throw new BusinessObjectException(
+					"Must identify BusinessObject before updating in database.");
 
 		if (this.changed)
 			((WatcherManager) this.manager).update(this);
@@ -65,12 +63,14 @@ public class Watcher extends BusinessObject {
 	@Override
 	public void create() throws SQLException, BusinessObjectException {
 		if (this.identified)
-			throw new BusinessObjectException("Identified object should not be created.");
+			throw new BusinessObjectException(
+					"Identified object should not be created.");
 
 		((WatcherManager) this.manager).create(this);
 	}
-	
-	public void setData(int userId, String paperName, double boundValue, int boundType) {
+
+	public void setData(int userId, String paperName, double boundValue,
+			int boundType) {
 		setUserId(userId);
 		setPaperName(paperName);
 		setBoundValue(boundValue);

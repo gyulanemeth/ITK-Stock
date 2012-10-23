@@ -1,17 +1,19 @@
 package hu.ppke.itk.itkStock.server.db.dbAccess;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
 /**
- * Ez egy wrapper class a java.sql.ResultSet-re. A kliensek k�nnyen v�gig tudnak iter�lni egy
- * lek�rdez�s eredm�ny�n, �s k�zvetlen�l a BusinessObject-el tudnak foglalkozni.
+ * This is a wrapper class for the java.sql.ResultSet class. The clients can
+ * iterate over the set, and get directly a BusinessObjectSet object.
  * 
- * @param <T> A saj�t BusinessObject lesz�rmazottad, amire az iter�tort haszn�lod.
+ * @param <T>
+ *            A class extending the BusinessObject class, for you are using this
+ *            iterator.
  */
-public abstract class BusinessObjectSetIterator<T extends BusinessObject> implements Iterator<BusinessObject> {
+public abstract class BusinessObjectSetIterator<T extends BusinessObject>
+		implements Iterator<BusinessObject> {
 
 	protected ResultSet rs;
 
