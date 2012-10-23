@@ -28,6 +28,7 @@ public class UserManager extends AbstractManager<User>
 	private PreparedStatement setPassword = null;
 	private PreparedStatement setEmail = null;
 	private PreparedStatement setMoney = null;
+	private PreparedStatement getMoney = null;
 	private PreparedStatement setUsername = null;
 	private PreparedStatement authenticateUser = null;
 	private PreparedStatement checkUserExistenceByName = null;
@@ -56,6 +57,7 @@ public class UserManager extends AbstractManager<User>
 		this.promoteAdmin = this.dbConnector.prepareStatement("UPDATE users SET is_admin = 1 WHERE username = ?");
 		this.demoteAdmin = this.dbConnector.prepareStatement("UPDATE users SET is_admin = 0 WHERE username = ?");
 		this.setMoney = this.dbConnector.prepareStatement("UPDATE users SET money = ? WHERE username = ?");
+		this.getMoney = this.dbConnector.prepareStatement("SELECT money FROM users WHERE username = ?");
 	}
 
 	public void addUser(String username, String email, String password) throws SQLException
@@ -84,6 +86,17 @@ public class UserManager extends AbstractManager<User>
 		this.setMoney.setDouble(1, money);
 		this.setMoney.setString(2, username);
 		this.setMoney.executeUpdate();
+	}
+
+	public double getMoney(String username) throws SQLException
+	{
+		this.getMoney.setString(1, username);
+		this._resultSet = this.getMoney.executeQuery();
+		
+		if ( this.resultSet.next() )
+			return this._resultSet.getDouble(1);
+
+		return 0.0D;
 	}
 
 
