@@ -8,27 +8,36 @@ DROP TRIGGER IF EXISTS watchers_insert;
 DROP TRIGGER IF EXISTS watchers_update;
  
 CREATE TABLE StockData (
-	paper_name VARCHAR (32),
-	date int,
-	time int,
+	paper_name VARCHAR(32),
+	date INT,
+	time INT,
 	price DOUBLE,
 	volume LONG,
+
 	INDEX (papername, date),
 	INDEX (date)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) NOT NULL,
-  `email` varchar(60) NOT NULL,
-  `password` varchar(60) NOT NULL,
-  `money` double DEFAULT '0.0',
-  `is_admin` bool NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`username` VARCHAR(20) NOT NULL,
+	`email` VARCHAR(60) NOT NULL,
+	`password` VARCHAR(60) NOT NULL,
+	`money` DOUBLE DEFAULT '0.0',
+	`is_admin` BOOL NOT NULL DEFAULT '0',
+	
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-CREATE TABLE StockHistory(user_id INT PRIMARY KEY NOT NULL, paper_name VARCHAR(20), date DATE, time TIME, close double, volume LONG);
+CREATE TABLE StockHistory (
+	user_id INT PRIMARY KEY NOT NULL,
+	paper_name VARCHAR(20),
+	date DATE,
+	time TIME,
+	close DOUBLE,
+	volume LONG
+);
  
 INSERT INTO users VALUES (NULL, 'Some Body', 'somebody@something.com', 'pass', '500000.0', '1');
 INSERT INTO users VALUES (NULL, 'No Body', 'nobody@nothing.com', 'pass2', '10000.0', '0');
