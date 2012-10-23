@@ -5,15 +5,15 @@ package hu.ppke.itk.itkStock.server.db.historicData;
 	Record representing data about a single transaction;
 */
 public class Transaction {
-	private final int price;
+	private final double price;
 	private final int volume;
 
-	public Transaction(int price, int volume) {
+	public Transaction(double price, int volume) {
 		this.price = price;
 		this.volume = volume;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 	public int getVolume() {

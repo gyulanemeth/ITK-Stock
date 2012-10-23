@@ -84,12 +84,12 @@ public class StockData {
 		try {
 			dbc.initConnection();
 			if(tickers == null || tickers.length < 1) {
-				stmt = dbc.prepareStatement("select papername, date, time, close, volume from StockData where date between ? and ?");
+				stmt = dbc.prepareStatement("select paper_name, date, time, close, volume from StockData where date between ? and ?");
 			}
 			else {
 				StringBuilder sb = new StringBuilder("?");
 				for(int i=1; i<tickers.length; ++i) sb.append(", ?");
-				stmt = dbc.prepareStatement("select papername, date, time, close, volume from StockData where date between ? and ? and papername in ("+sb.toString()+")");
+				stmt = dbc.prepareStatement("select paper_name, date, time, close, volume from StockData where date between ? and ? and papername in ("+sb.toString()+")");
 
 				for(int i=0; i<tickers.length; ++i) stmt.setString(i+3, tickers[i]);
 			}
@@ -98,10 +98,10 @@ public class StockData {
 			rs = stmt.executeQuery();
 
 			String stock;
-			int date;
-			int time;
-			int price;
-			int volume;
+//			int date;
+//			int time;
+//			int price;
+//			int volume;
 			StockDate key;
 			SortedMap<StockDate, SortedMap<StockTime, Transaction> > tree;
 			StockTime timekey;
@@ -111,7 +111,7 @@ public class StockData {
 				stock = rs.getString("paper_name");
 				key = new StockDate( rs.getInt("date") );
 				timekey = new StockTime( rs.getInt("time") );
-				value = new Transaction( rs.getInt("close"), rs.getInt("volume") );
+				value = new Transaction( rs.getDouble("close"), rs.getInt("volume") );
 				if( Result.containsKey(stock) ) {
 					tree = Result.get(stock);
 					if( tree.containsKey(key) ) {
