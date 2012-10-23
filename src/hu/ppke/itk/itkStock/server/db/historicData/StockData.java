@@ -108,7 +108,7 @@ public class StockData {
 			SortedMap<StockTime, Transaction> timetree;
 			Transaction value = null;
 			while(rs.next()) {
-				stock = rs.getString("papername");
+				stock = rs.getString("paper_name");
 				key = new StockDate( rs.getInt("date") );
 				timekey = new StockTime( rs.getInt("time") );
 				value = new Transaction( rs.getInt("close"), rs.getInt("volume") );

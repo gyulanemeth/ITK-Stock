@@ -29,11 +29,11 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		if (this.dbConnector == null || !this.dbConnector.isInitialized())
 			throw new SQLException("DatabaseConnector is not initialized.");
 
-		addWatcher = this.dbConnector.prepareStatement("INSERT INTO watchers (username, stock, boundvalue, boundtype) VALUES (?, ?, ?, ?)");
+		addWatcher = this.dbConnector.prepareStatement("INSERT INTO watchers (user_id, paper_name, boundvalue, boundtype) VALUES (?, ?, ?, ?)");
 		removeWatcher = this.dbConnector.prepareStatement("DELETE FROM watchers WHERE id =?");
-		updateWatcher = this.dbConnector.prepareStatement("UPDATE watchers SET username = ?, stock = ?, boundvalue = ?, boundtype = ? WHERE id = ?");
-		getWatcherById = this.dbConnector.prepareStatement("SELECT username, stock, boundvalue, boundtype FROM watchers WHERE id = ?");
-		getWatchersByUser = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE username = ?");
+		updateWatcher = this.dbConnector.prepareStatement("UPDATE watchers SET username = ?, paper_name = ?, boundvalue = ?, boundtype = ? WHERE id = ?");
+		getWatcherById = this.dbConnector.prepareStatement("SELECT user_id, paper_name, boundvalue, boundtype FROM watchers WHERE id = ?");
+		getWatchersByUser = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE user_id = ?");
 		getWatchersByStock = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE stock = ?");
 		setBoundValue = this.dbConnector.prepareStatement("UPDATE watchers SET boundvalue = ? WHERE id = ?");
 		setBoundType = this.dbConnector.prepareStatement("UPDATE watchers SET boundtype = ? WHERE id = ?");
@@ -48,9 +48,9 @@ public class WatcherManager extends AbstractManager<Watcher> {
 
 	@Override
 	public void update(Watcher bo) throws SQLException {
-		updateWatcher.setString(1, bo.getUserName());
-		updateWatcher.setString(2, bo.getStockName());
-		updateWatcher.setFloat(3, bo.getBoundValue());
+		updateWatcher.setInt(1, bo.getId());
+		updateWatcher.setString(2, bo.getPaperName());
+		updateWatcher.setDouble(3, bo.getBoundValue());
 		updateWatcher.setInt(4, bo.getBoundType());
 		updateWatcher.setInt(5, bo.getId());
 		updateWatcher.executeUpdate();
@@ -75,15 +75,15 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		if (bo.getId() != 0 && this.checkUserExistenceById(bo.getId()))
 			throw new BusinessObjectException("Watcher with id = " + bo.getId() + " already exists.");
 
-		this.addWatcher(bo.getUserName(), bo.getStockName(), bo.getBoundValue(), bo.getBoundType());
+		this.addWatcher(bo.getUserId(), bo.getPaperName(), bo.getBoundValue(), bo.getBoundType());
 		bo.get();
 
 	}
 
-	public void addWatcher(String userName, String stockName, float boundValue, int boundType) throws SQLException {
-		addWatcher.setString(1, userName);
-		addWatcher.setString(2, stockName);
-		addWatcher.setFloat(3, boundValue);
+	public void addWatcher(int userId, String paperName, double boundValue, int boundType) throws SQLException {
+		addWatcher.setInt(1, userId);
+		addWatcher.setString(2, paperName);
+		addWatcher.setDouble(3, boundValue);
 		addWatcher.setInt(4, boundType);
 		addWatcher.executeUpdate();
 	}
@@ -93,8 +93,8 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		removeWatcher.executeUpdate();
 	}
 
-	public void setBoundValue(int id, float boundValue) throws SQLException {
-		setBoundValue.setFloat(1, boundValue);
+	public void setBoundValue(int id, double boundValue) throws SQLException {
+		setBoundValue.setDouble(1, boundValue);
 		setBoundValue.setInt(2, id);
 		setBoundValue.executeUpdate();
 	}
@@ -105,14 +105,14 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		setBoundType.executeUpdate();
 	}
 
-	public WatcherSetIterator getWatchersByUser(String userName) throws SQLException {
-		getWatchersByUser.setString(1, userName);
+	public WatcherSetIterator getWatchersByUser(int userId) throws SQLException {
+		getWatchersByUser.setInt(1, userId);
 		ResultSet rs = getWatchersByUser.executeQuery();
 		return new WatcherSetIterator(rs);
 	}
 
-	public WatcherSetIterator getWatchersByStock(String stockName) throws SQLException {
-		getWatchersByStock.setString(1, stockName);
+	public WatcherSetIterator getWatchersByStock(String paperName) throws SQLException {
+		getWatchersByStock.setString(1, paperName);
 		ResultSet rs = getWatchersByStock.executeQuery();
 		return new WatcherSetIterator(rs);
 	}
@@ -126,7 +126,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 
 	public Watcher getWatcherFromSet() throws SQLException {
 		Watcher ret = new Watcher(this, resultSet.getInt(1));
-		ret.setData(resultSet.getString(2), resultSet.getString(3), resultSet.getFloat(4), resultSet.getInt(5));
+		ret.setData(resultSet.getInt(2), resultSet.getString(3), resultSet.getDouble(4), resultSet.getInt(5));
 
 		return ret;
 	}

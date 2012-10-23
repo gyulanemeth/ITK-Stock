@@ -23,10 +23,10 @@ public class Watcher extends BusinessObject {
 		public static final int UPPER_BOUND = 1, LOWER_BOUND = -1;
 	}
 
-	private String userName;
-	private String stockName;
+	private int userId;
+	private String paperName;
 	private int boundType;
-	private float boundValue;
+	private double boundValue;
 	private boolean changed = false;
 
 	public Watcher(WatcherManager manager, int id) {
@@ -70,9 +70,9 @@ public class Watcher extends BusinessObject {
 		((WatcherManager) this.manager).create(this);
 	}
 	
-	public void setData(String userName, String stockName, float boundValue, int boundType) {
-		setUserName(userName);
-		setStockName(stockName);
+	public void setData(int userId, String paperName, double boundValue, int boundType) {
+		setUserId(userId);
+		setPaperName(paperName);
 		setBoundValue(boundValue);
 		setBoundType(boundType);
 		changed = true;
@@ -86,28 +86,28 @@ public class Watcher extends BusinessObject {
 		this.boundType = boundType;
 	}
 
-	public float getBoundValue() {
+	public double getBoundValue() {
 		return boundValue;
 	}
 
-	public void setBoundValue(float value) {
+	public void setBoundValue(double value) {
 		this.boundValue = value;
 	}
 
-	public String getUserName() {
-		return userName;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public String getStockName() {
-		return stockName;
+	public String getPaperName() {
+		return paperName;
 	}
 
-	public void setStockName(String stockName) {
-		this.stockName = stockName;
+	public void setPaperName(String paperName) {
+		this.paperName = paperName;
 	}
 
 }

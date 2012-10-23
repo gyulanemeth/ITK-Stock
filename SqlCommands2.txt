@@ -3,13 +3,12 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE watchers (
 	id int(11) NOT NULL AUTO_INCREMENT,
-	username varchar(20) NOT NULL,
-	stockname varchar(20) NOT NULL,
-	boundvalue  float(7,4) NOT NULL,
-	boundtype int (11) NOT NULL DEFAULT '0',
+	user_id int(11) NOT NULL,
+	paper_name varchar(20) NOT NULL,
+	boundvalue  double NOT NULL,
+	boundtype tinyint NOT NULL DEFAULT '0',
 	PRIMARY KEY(id),
-	FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
-	FOREIGN KEY (stockname) REFERENCES stocks(stockname) ON DELETE CASCADE
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) AUTO_INCREMENT=8;
 
 CREATE FUNCTION watchers_trigger(

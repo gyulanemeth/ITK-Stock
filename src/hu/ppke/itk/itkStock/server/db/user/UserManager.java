@@ -79,9 +79,9 @@ public class UserManager extends AbstractManager<User>
 		this.setPassword.executeUpdate();
 	}
 
-	public void setMoney(String username, int money) throws SQLException
+	public void setMoney(String username, double money) throws SQLException
 	{
-		this.setMoney.setInt(1, money);
+		this.setMoney.setDouble(1, money);
 		this.setMoney.setString(2, username);
 		this.setMoney.executeUpdate();
 	}
