@@ -1,9 +1,9 @@
 package hu.ppke.itk.itkStock.nio.protocol;
 
 /**
- * Command for removing watchers by the client.
+ * Command for the notification of clients by the server about the price change.
  */
-public class UnregisterWatcherCommand extends AbstractProtocolCommandWorker {
+public class NotifyWatcherClientCommand extends AbstractProtocolCommandWorker {
 
 	@Override
 	public ProtocolMessage response(ProtocolMessage msg) {

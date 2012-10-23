@@ -10,6 +10,7 @@ import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
 import hu.ppke.itk.itkStock.server.db.stockWatcher.WatcherHandler;
 import hu.ppke.itk.itkStock.server.db.user.User;
 import hu.ppke.itk.itkStock.server.db.user.UserManager;
+import hu.ppke.itk.itkStock.server.id.StockId;
 
 public class TestMain
 {
@@ -37,6 +38,9 @@ public class TestMain
 			StockDataManager stockManager = new StockDataManager(dbc);
 			DailyDataListener listener = new DailyDataListener(stockManager);
 			WatcherHandler wh = new WatcherHandler();
+			StockId stockId = new StockId();
+			/// TODO: stockId-t feltölteni
+			stockManager.addObserver(stockId);
 			stockManager.addObserver(wh);
 			wh.init();
 			listener.start();

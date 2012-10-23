@@ -1,10 +1,9 @@
 package hu.ppke.itk.itkStock.server.db.stockWatcher;
 
-import java.io.Serializable;
-import java.sql.SQLException;
-
 import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObject;
 import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
+
+import java.sql.SQLException;
 
 /**
  * Current price watcher class. Its task is to watch the price of a given stock.
@@ -12,9 +11,7 @@ import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
  * 
  * @see WatcherManager
  */
-public class Watcher extends BusinessObject implements Serializable {
-
-	private static final long serialVersionUID = -4771398556329117355L;
+public class Watcher extends BusinessObject {
 
 	/**
 	 * This class holds the id for lower/upper bounds.

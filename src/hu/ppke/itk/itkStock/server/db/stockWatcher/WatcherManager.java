@@ -21,6 +21,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 	private PreparedStatement getWatcherById = null;
 	private PreparedStatement getWatchersByStock = null;
 	private PreparedStatement getWatchersByUser = null;
+	private PreparedStatement removeWatcherByUserStockType = null;
 	private PreparedStatement setBoundValue = null;
 	private PreparedStatement setBoundType = null;
 	private PreparedStatement checkWatcherExistenceById = null;
@@ -38,6 +39,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		getWatcherById = this.dbConnector.prepareStatement("SELECT user_id, paper_name, boundvalue, boundtype FROM watchers WHERE id = ?");
 		getWatchersByUser = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE user_id = ?");
 		getWatchersByStock = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE stock = ?");
+		removeWatcherByUserStockType = this.dbConnector.prepareStatement("DELETE * FROM watchers WHERE user_id = ? paper_name = ? AND boundtype = ?");
 		setBoundValue = this.dbConnector.prepareStatement("UPDATE watchers SET boundvalue = ? WHERE id = ?");
 		setBoundType = this.dbConnector.prepareStatement("UPDATE watchers SET boundtype = ? WHERE id = ?");
 		checkWatcherExistenceById = this.dbConnector.prepareStatement("SELECT IF( ( SELECT COUNT( * ) FROM watchers WHERE id = ? ) = 0, FALSE, TRUE )");
@@ -136,6 +138,14 @@ public class WatcherManager extends AbstractManager<Watcher> {
 
 	public void clear() throws SQLException {
 		clear.executeUpdate();
+	}
+	
+	public void removeWatcherByUserIdStockType (int userId, String paperName, int boundType) throws SQLException {
+		removeWatcherByUserStockType.setInt(1, userId);
+		removeWatcherByUserStockType.setString(2, paperName);
+		removeWatcherByUserStockType.setInt(3, userId);
+		
+		removeWatcherByUserStockType.executeUpdate();
 	}
 
 }
