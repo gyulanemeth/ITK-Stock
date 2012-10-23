@@ -33,15 +33,15 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		if (this.dbConnector == null || !this.dbConnector.isInitialized())
 			throw new SQLException("DatabaseConnector is not initialized.");
 
-		addWatcher = this.dbConnector.prepareStatement("INSERT INTO watchers (user_id, paper_name, boundvalue, boundtype) VALUES (?, ?, ?, ?)");
+		addWatcher = this.dbConnector.prepareStatement("INSERT INTO watchers (user_id, paper_name, bound_value, bound_type) VALUES (?, ?, ?, ?)");
 		removeWatcher = this.dbConnector.prepareStatement("DELETE FROM watchers WHERE id =?");
-		updateWatcher = this.dbConnector.prepareStatement("UPDATE watchers SET username = ?, paper_name = ?, boundvalue = ?, boundtype = ? WHERE id = ?");
-		getWatcherById = this.dbConnector.prepareStatement("SELECT user_id, paper_name, boundvalue, boundtype FROM watchers WHERE id = ?");
+		updateWatcher = this.dbConnector.prepareStatement("UPDATE watchers SET username = ?, paper_name = ?, bound_value = ?, bound_type = ? WHERE id = ?");
+		getWatcherById = this.dbConnector.prepareStatement("SELECT user_id, paper_name, bound_value, bound_type FROM watchers WHERE id = ?");
 		getWatchersByUser = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE user_id = ?");
 		getWatchersByStock = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE stock = ?");
-		removeWatcherByUserStockType = this.dbConnector.prepareStatement("DELETE * FROM watchers WHERE user_id = ? paper_name = ? AND boundtype = ?");
-		setBoundValue = this.dbConnector.prepareStatement("UPDATE watchers SET boundvalue = ? WHERE id = ?");
-		setBoundType = this.dbConnector.prepareStatement("UPDATE watchers SET boundtype = ? WHERE id = ?");
+		removeWatcherByUserStockType = this.dbConnector.prepareStatement("DELETE * FROM watchers WHERE user_id = ? paper_name = ? AND bound_type = ?");
+		setBoundValue = this.dbConnector.prepareStatement("UPDATE watchers SET bound_value = ? WHERE id = ?");
+		setBoundType = this.dbConnector.prepareStatement("UPDATE watchers SET bound_type = ? WHERE id = ?");
 		checkWatcherExistenceById = this.dbConnector.prepareStatement("SELECT IF( ( SELECT COUNT( * ) FROM watchers WHERE id = ? ) = 0, FALSE, TRUE )");
 		clear = this.dbConnector.prepareStatement("DELETE * FROM watchers");
 	}

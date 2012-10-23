@@ -8,10 +8,10 @@ DROP TRIGGER IF EXISTS watchers_insert;
 DROP TRIGGER IF EXISTS watchers_update;
  
 CREATE TABLE StockData (
-	paper_name VARCHAR (32),
+	paper_name VARCHAR (20),
 	date int,
 	time int,
-	price DOUBLE,
+	close DOUBLE,
 	volume LONG,
 	INDEX (papername, date),
 	INDEX (date)
@@ -28,7 +28,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-CREATE TABLE StockHistory(user_id INT PRIMARY KEY NOT NULL, paper_name VARCHAR(20), date DATE, time TIME, close double, volume LONG);
+CREATE TABLE StockHistory(user_id INT(11) PRIMARY KEY NOT NULL, paper_name VARCHAR(20), date DATE, time TIME, close double, volume LONG);
  
 INSERT INTO users VALUES (NULL, 'Some Body', 'somebody@something.com', 'pass', '500000.0', '1');
 INSERT INTO users VALUES (NULL, 'No Body', 'nobody@nothing.com', 'pass2', '10000.0', '0');

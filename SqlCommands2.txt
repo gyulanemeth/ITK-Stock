@@ -5,8 +5,8 @@ CREATE TABLE watchers (
 	id int(11) NOT NULL AUTO_INCREMENT,
 	user_id int(11) NOT NULL,
 	paper_name varchar(20) NOT NULL,
-	boundvalue  double NOT NULL,
-	boundtype tinyint NOT NULL DEFAULT '0',
+	bound_value  double NOT NULL,
+	bound_type tinyint NOT NULL DEFAULT '0',
 	PRIMARY KEY(id),
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) AUTO_INCREMENT=8;
