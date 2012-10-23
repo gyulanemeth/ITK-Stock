@@ -23,9 +23,9 @@ public class StockDataSaver extends AbstractManager<StockDataRecord> {
 			throw new SQLException("DatabaseConnector is not initialized.");
 
 		this.addRecord = this.dbConnector
-				.prepareStatement("INSERT INTO StockData ( papername, date, time, close, volume) VALUES ( ?, ?, ?, ?, ? )");
+				.prepareStatement("INSERT INTO StockData ( paper_name, date, time, close, volume) VALUES ( ?, ?, ?, ?, ? )");
 		this.checkRecordExistence = this.dbConnector
-				.prepareStatement("SELECT IF( ( SELECT COUNT( * ) FROM StockData WHERE papername = ? AND date = ? AND time = ? AND close = ? AND volume = ? ) = 0, FALSE, TRUE )");
+				.prepareStatement("SELECT IF( ( SELECT COUNT( * ) FROM StockData WHERE paper_name = ? AND date = ? AND time = ? AND close = ? AND volume = ? ) = 0, FALSE, TRUE )");
 	}
 	
 	public void addRecord(String papername, String date, String time, String close,

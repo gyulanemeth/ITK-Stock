@@ -28,7 +28,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-CREATE TABLE StockHistory(user_id INT PRIMARY KEY NOT NULL, paper_name VARCHAR(20), date DATE, time TIME, price double, volume LONG);
+CREATE TABLE StockHistory(user_id INT PRIMARY KEY NOT NULL, paper_name VARCHAR(20), date DATE, time TIME, close double, volume LONG);
  
 INSERT INTO users VALUES (NULL, 'Some Body', 'somebody@something.com', 'pass', '500000.0', '1');
 INSERT INTO users VALUES (NULL, 'No Body', 'nobody@nothing.com', 'pass2', '10000.0', '0');
