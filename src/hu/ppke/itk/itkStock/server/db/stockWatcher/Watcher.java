@@ -1,5 +1,6 @@
 package hu.ppke.itk.itkStock.server.db.stockWatcher;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 
 import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObject;
@@ -11,7 +12,9 @@ import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
  * 
  * @see WatcherManager
  */
-public class Watcher extends BusinessObject {
+public class Watcher extends BusinessObject implements Serializable {
+
+	private static final long serialVersionUID = -4771398556329117355L;
 
 	/**
 	 * This class holds the id for lower/upper bounds.

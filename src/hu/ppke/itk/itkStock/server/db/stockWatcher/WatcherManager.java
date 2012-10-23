@@ -24,6 +24,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 	private PreparedStatement setBoundValue = null;
 	private PreparedStatement setBoundType = null;
 	private PreparedStatement checkWatcherExistenceById = null;
+	private PreparedStatement clear = null;
 
 	public WatcherManager(DatabaseConnector dbConnector) throws SQLException {
 		super(dbConnector);
@@ -40,7 +41,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		setBoundValue = this.dbConnector.prepareStatement("UPDATE watchers SET boundvalue = ? WHERE id = ?");
 		setBoundType = this.dbConnector.prepareStatement("UPDATE watchers SET boundtype = ? WHERE id = ?");
 		checkWatcherExistenceById = this.dbConnector.prepareStatement("SELECT IF( ( SELECT COUNT( * ) FROM watchers WHERE id = ? ) = 0, FALSE, TRUE )");
-
+		clear = this.dbConnector.prepareStatement("DELETE * FROM watchers");
 	}
 
 	public WatcherManager(ResultSet rs) {
@@ -131,6 +132,10 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		ret.setData(resultSet.getInt(2), resultSet.getString(3), resultSet.getDouble(4), resultSet.getInt(5));
 
 		return ret;
+	}
+
+	public void clear() throws SQLException {
+		clear.executeUpdate();
 	}
 
 }

@@ -7,6 +7,7 @@ import hu.ppke.itk.itkStock.SaveDailyDatas.DailyDataListener;
 import hu.ppke.itk.itkStock.SaveDailyDatas.StockDataManager;
 import hu.ppke.itk.itkStock.server.db.dbAccess.BusinessObjectException;
 import hu.ppke.itk.itkStock.server.db.dbAccess.DatabaseConnector;
+import hu.ppke.itk.itkStock.server.db.stockWatcher.WatcherHandler;
 import hu.ppke.itk.itkStock.server.db.user.User;
 import hu.ppke.itk.itkStock.server.db.user.UserManager;
 
@@ -32,12 +33,14 @@ public class TestMain
 			System.out.println(testuser.getPassword());
 			System.out.println(testuser.isAdmin());
 			
-			//kikommenteltem, mert nem tudom, hogy hol van definialva a Pair.
-//			///gubkr new
-//			StockDataManager stockManager = new StockDataManager(dbc);
-//			DailyDataListener listener = new DailyDataListener(stockManager);
-//			listener.start();
-//			///gubkr
+			
+			StockDataManager stockManager = new StockDataManager(dbc);
+			DailyDataListener listener = new DailyDataListener(stockManager);
+			WatcherHandler wh = new WatcherHandler();
+			stockManager.addObserver(wh);
+			wh.init();
+			listener.start();
+
 			boolean interrupted = false;
 			while(!interrupted){
 				try {
