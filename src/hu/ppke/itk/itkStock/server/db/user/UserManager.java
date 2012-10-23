@@ -91,10 +91,10 @@ public class UserManager extends AbstractManager<User>
 	public double getMoney(String username) throws SQLException
 	{
 		this.getMoney.setString(1, username);
-		this._resultSet = this.getMoney.executeQuery();
+		this.resultSet = this.getMoney.executeQuery();
 		
 		if ( this.resultSet.next() )
-			return this._resultSet.getDouble(1);
+			return this.resultSet.getDouble(1);
 
 		return 0.0D;
 	}
