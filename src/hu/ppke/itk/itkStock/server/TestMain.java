@@ -39,7 +39,8 @@ public class TestMain
 			DailyDataListener listener = new DailyDataListener(stockManager);
 			WatcherHandler wh = new WatcherHandler();
 			StockId stockId = new StockId();
-			/// TODO: stockId-t feltölteni
+			// TODO: stockId-t feltölteni
+			// TODO: elvileg az id-ket ki kell küldeni a klienseknek, és azokkal azonosítani a részvényeket
 			stockManager.addObserver(stockId);
 			stockManager.addObserver(wh);
 			wh.init();

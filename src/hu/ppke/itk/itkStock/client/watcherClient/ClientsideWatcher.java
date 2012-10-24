@@ -1,6 +1,7 @@
 package hu.ppke.itk.itkStock.client.watcherClient;
 
 import hu.ppke.itk.itkStock.server.db.stockWatcher.Watcher;
+import hu.ppke.itk.itkStock.server.db.stockWatcher.Watcher.BoundTypes;
 
 /**
  * This is a simpler version of the {@link Watcher} class, it stores only the
@@ -46,6 +47,18 @@ public class ClientsideWatcher {
 
 	public int getUserId() {
 		return userId;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("papername: ");
+		stringBuilder.append(paperName);
+		stringBuilder.append(", bound value: ");
+		stringBuilder.append(boundValue);
+		stringBuilder.append(", bound type: ");
+		stringBuilder.append((boundType == BoundTypes.LOWER_BOUND ? "lower bound" : "upper bound"));
+		return stringBuilder.toString();
 	}
 
 }

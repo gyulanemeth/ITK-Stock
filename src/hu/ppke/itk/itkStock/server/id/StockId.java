@@ -20,6 +20,7 @@ public class StockId implements StockDataObserver {
 	private Map<Short, String> keyToValue = new HashMap<Short, String>();
 	private Map<String, Short> valueToKey = new HashMap<String, Short>();
 	private short key = 1;
+	private boolean filled = false;
 
 	/**
 	 * Default constructor Call initializeIdentifiers/put/getId to add values
@@ -116,6 +117,14 @@ public class StockId implements StockDataObserver {
 	public void notify(List<String> updatedStocks) {
 		// TODO: stock names, ids and prices should be updated when this
 		// function is invoked
+		
+		if(!filled) {
+			initializeIdentifiers((String[]) updatedStocks.toArray());
+			// TODO: árak feltöltése
+			filled = true;
+		} else {
+			// TODO: ha nem kezdeti feltöltés, nevek, árak frissítése
+		}
 	}
 
 }

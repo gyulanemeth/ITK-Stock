@@ -22,6 +22,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 	private PreparedStatement getWatchersByStock = null;
 	private PreparedStatement getWatchersByUser = null;
 	private PreparedStatement removeWatcherByUserStockType = null;
+	private PreparedStatement getWatcherByUserStockType = null;
 	private PreparedStatement setBoundValue = null;
 	private PreparedStatement setBoundType = null;
 	private PreparedStatement checkWatcherExistenceById = null;
@@ -39,6 +40,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		getWatcherById = this.dbConnector.prepareStatement("SELECT user_id, paper_name, bound_value, bound_type FROM watchers WHERE id = ?");
 		getWatchersByUser = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE user_id = ?");
 		getWatchersByStock = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE stock = ?");
+		getWatcherByUserStockType = this.dbConnector.prepareStatement("SELECT * FROM watchers WHERE user_id = ? paper_name = ? AND bound_type = ?");
 		removeWatcherByUserStockType = this.dbConnector.prepareStatement("DELETE * FROM watchers WHERE user_id = ? paper_name = ? AND bound_type = ?");
 		setBoundValue = this.dbConnector.prepareStatement("UPDATE watchers SET bound_value = ? WHERE id = ?");
 		setBoundType = this.dbConnector.prepareStatement("UPDATE watchers SET bound_type = ? WHERE id = ?");
@@ -63,7 +65,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 
 	@Override
 	public Watcher get(int id) throws SQLException, BusinessObjectException {
-		if (!this.checkUserExistenceById(id))
+		if (!this.checkWatcherExistenceById(id))
 			throw new BusinessObjectException("User with id = " + id + " does not exist.");
 
 		getWatcherById.setInt(1, id);
@@ -77,7 +79,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 
 	@Override
 	public void create(Watcher bo) throws SQLException, BusinessObjectException {
-		if (bo.getId() != 0 && this.checkUserExistenceById(bo.getId()))
+		if (bo.getId() != 0 && this.checkWatcherExistenceById(bo.getId()))
 			throw new BusinessObjectException("Watcher with id = " + bo.getId() + " already exists.");
 
 		this.addWatcher(bo.getUserId(), bo.getPaperName(), bo.getBoundValue(), bo.getBoundType());
@@ -122,7 +124,7 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		return new WatcherSetIterator(rs);
 	}
 
-	public boolean checkUserExistenceById(int id) throws SQLException {
+	public boolean checkWatcherExistenceById(int id) throws SQLException {
 		checkWatcherExistenceById.setInt(1, id);
 		resultSet = checkWatcherExistenceById.executeQuery();
 
@@ -146,6 +148,16 @@ public class WatcherManager extends AbstractManager<Watcher> {
 		removeWatcherByUserStockType.setInt(3, userId);
 		
 		removeWatcherByUserStockType.executeUpdate();
+	}
+	
+	public boolean getWatcherByUserIdStockType (int userId, String paperName, int boundType) throws SQLException {
+		getWatcherByUserStockType.setInt(1, userId);
+		getWatcherByUserStockType.setString(2, paperName);
+		getWatcherByUserStockType.setInt(3, userId);
+		
+		resultSet =  getWatcherByUserStockType.executeQuery();
+		
+		return resultSet.first();
 	}
 
 }

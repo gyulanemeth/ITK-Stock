@@ -2,12 +2,13 @@ package hu.ppke.itk.itkStock.client.watcherClient;
 
 import hu.ppke.itk.itkStock.nio.core.NioClient;
 import hu.ppke.itk.itkStock.nio.core.RspHandler;
-import hu.ppke.itk.itkStock.nio.protocol.NotifyWatcherClientCommand;
+import hu.ppke.itk.itkStock.nio.protocol.ProtocolTools;
 import hu.ppke.itk.itkStock.nio.protocol.RegisterWatcherCommand;
 import hu.ppke.itk.itkStock.nio.protocol.UnregisterWatcherCommand;
 import hu.ppke.itk.itkStock.server.db.stockWatcher.Watcher;
 import hu.ppke.itk.itkStock.server.db.stockWatcher.Watcher.BoundTypes;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ public class WatcherClient extends Observable implements Runnable {
 
 	private NioClient client;
 	private RspHandler handler;
+
+	RegisterWatcherCommand rwc = new RegisterWatcherCommand();
+	UnregisterWatcherCommand uwc = new UnregisterWatcherCommand();
 
 	private ArrayList<ClientsideWatcher> watchers = new ArrayList<ClientsideWatcher>();
 	private HashMap<String, Double> lastPrices = new HashMap<String, Double>();
@@ -53,12 +57,9 @@ public class WatcherClient extends Observable implements Runnable {
 		t.start();
 
 		handler = new RspHandler();
-		handler.addProtocolCommandWorker((short) 201,
-				new RegisterWatcherCommand());
-		handler.addProtocolCommandWorker((short) 203,
-				new UnregisterWatcherCommand());
-		handler.addProtocolCommandWorker((short) 206,
-				new NotifyWatcherClientCommand());
+
+		handler.addProtocolCommandWorker(ProtocolTools.registerWatcher, rwc);
+		handler.addProtocolCommandWorker(ProtocolTools.unregisterWatcher, uwc);
 	}
 
 	/**
@@ -70,56 +71,68 @@ public class WatcherClient extends Observable implements Runnable {
 	 *            the given bound value.
 	 * @param boundType
 	 *            the type of the bound.
-	 * @return <b>true</b> if the operation is successful, <b>false</b> otherwise.
+	 * @return the response message sent by the server.
 	 * 
 	 * @see BoundTypes
 	 */
-	public boolean addWatcher(String paperName, double boundValue, int boundType) {
+	public String addWatcher(String paperName, double boundValue, int boundType) {
 
 		ClientsideWatcher cw = new ClientsideWatcher(paperName, boundValue,
 				boundType, userId);
 		byte[] bytes = SerializationTools.objectToBytes(cw);
+		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+		
 
 		try {
+			byteStream.write(ProtocolTools.shortToBytes(ProtocolTools.registerWatcher));
+			byteStream.write(bytes);
 			client.send(bytes, handler);
-			watchers.add(cw);
+			
 		} catch (IOException e) {
-			return false;
+			return null;
 		}
 
 		handler.waitForResponse();
-
-		// TODO: hogyan kapom meg a választ?
-		return true;
+		
+		if(rwc.getServerMessage().contains("success"))
+			watchers.add(cw);
+		
+		return rwc.getServerMessage();
 	}
 
 	/**
+	 * 
 	 * Removes the given watcher, so that is no more observing the stock's price
 	 * change.
 	 * 
-	 * @param cw
-	 *            the watcher which should be removed.
-	 * @return <b>true</b> if the operation is successful, <b>false</b> otherwise.
+	 * @param cw the watcher which should be removed.
+	 * @return the response message sent by the server.
 	 */
-	public boolean removeWatcher(ClientsideWatcher cw) {
+	public String removeWatcher(ClientsideWatcher cw) {
 
 		byte[] bytes = SerializationTools.objectToBytes(cw);
+		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
 		try {
+			byteStream.write(ProtocolTools.shortToBytes(ProtocolTools.unregisterWatcher));
+			byteStream.write(bytes);
 			client.send(bytes, handler);
-			watchers.remove(cw);
+			
 		} catch (IOException e) {
-			return false;
+			return null;
 		}
 		handler.waitForResponse();
+		
+		if(uwc.getServerMessage().contains("success"))
+			watchers.remove(cw);
 
-		// TODO: hogyan kapom meg a választ?
-		return true;
+		return uwc.getServerMessage();
 	}
 
 	@Override
 	public void run() {
 		// TODO: nio szerver hogyan tudja értesíteni a klienst?
+		// TODO: ha minden igaz a nio szerverben ez még nincsen implementálva :S
 
 		// ha a szerver szól
 		// lastPrices.put(paperName, price);
