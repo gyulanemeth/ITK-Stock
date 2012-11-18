@@ -61,14 +61,18 @@ public class LogInComposite extends Composite{
 		        messageBox.setText("Login Form");
 				messageBox.setMessage("Welcome:" + username.getText());
 		        messageBox.open();
+		       MainGui.initializeMenu();
+		       MainGui.layout.topControl = MainGui.mainMenuComposite;
+		       getParent().layout();
 				}
 				}
 			});
+		
 		    username.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		    password.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    label1.pack();
-	    label2.pack();
-	    this.pack();
+		    label1.pack();
+		    label2.pack();
+		    this.pack();
 	}
 
 }
