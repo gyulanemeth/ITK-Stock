@@ -7,8 +7,6 @@ data/*
 # class files
 *.class
 
-# jar files
-*.jar
 
 # Apple thing.
 .DS_Store
