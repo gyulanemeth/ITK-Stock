@@ -1,5 +1,7 @@
 package hu.ppke.itk.itkStock.gui;
 
+
+
 import java.io.ObjectInputStream.GetField;
 
 import org.eclipse.swt.SWT;
@@ -14,6 +16,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import java.util.ResourceBundle;
 
 public class MainGui {
 
@@ -24,7 +27,7 @@ public class MainGui {
 	protected static MainMenuComposite mainMenuComposite;
 	private static SettingsComposite settingsComposite;
 	private static XmlConfigComposite xmlConfigComposite;
-	private static AccountComposite accountComposite;
+	private static ClientSettingsComposite accountComposite;
 	private int pageNumber = -1;
 	private static Composite page1 = null;
 	static StackLayout layout=null;
@@ -32,6 +35,9 @@ public class MainGui {
 	 static Display display;
 	 static Composite contentPanel;
 	 boolean logedIn=false;
+	 private static Menu menu;
+	 public static final int width = 800;
+	 public static final int height = 600;
 	/**
 	 * @param args
 	 */
@@ -53,7 +59,7 @@ public class MainGui {
 	    	}
 	    });
 	    contentPanel = new Composite(shell, SWT.BORDER);
-	    contentPanel.setBounds(0, 0, 800, 600);
+	    contentPanel.setBounds(0, 0, width, height);
 	    //contentPanel.setLayout(new FillLayout());
 	    layout = new StackLayout();
 	    contentPanel.setLayout(layout);
@@ -75,8 +81,26 @@ public class MainGui {
 		
 		xmlConfigComposite = new XmlConfigComposite(contentPanel, SWT.NONE);
 		
-		accountComposite = new AccountComposite(contentPanel, SWT.NONE);
-		
+		accountComposite = new ClientSettingsComposite(contentPanel, SWT.NONE);
+		 menu = new Menu(shell, SWT.BAR);
+			shell.setMenuBar(menu);
+			
+			MenuItem fileMenu = new MenuItem(menu, SWT.CASCADE);
+			fileMenu.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.fileMenu.text")); //$NON-NLS-1$ //$NON-NLS-2$
+			
+			Menu menu_1 = new Menu(fileMenu);
+			fileMenu.setMenu(menu_1);
+			
+			MenuItem exitItem = new MenuItem(menu_1, SWT.NONE);
+			exitItem.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.exitItem.text")); //$NON-NLS-1$ //$NON-NLS-2$
+			exitItem.addListener(SWT.Selection, new Listener() {
+				
+				@Override
+				public void handleEvent(Event arg0) {
+					// TODO Auto-generated method stub
+					shell.close();
+				}
+			});
 		shell.pack();
 		//shell.setSize(800, 600);
 		
@@ -90,110 +114,92 @@ public class MainGui {
 	}
 	
 	public static void initializeMenu(){
-		  Menu menu = new Menu(shell, SWT.BAR);
-			shell.setMenuBar(menu);
+		 
 			
-			MenuItem fileMenu = new MenuItem(menu, SWT.CASCADE);
-			fileMenu.setText("File");
+		MenuItem mntmView = new MenuItem(menu, SWT.CASCADE);
+		mntmView.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmView.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		
+		Menu menu_2 = new Menu(mntmView);
+		mntmView.setMenu(menu_2);
+		
+		MenuItem config = new MenuItem(menu_2, SWT.NONE);
+		config.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.config.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		config.addListener(SWT.Selection, new Listener() {
 			
-			Menu menu_1 = new Menu(fileMenu);
-			fileMenu.setMenu(menu_1);
-			
-			MenuItem exitItem = new MenuItem(menu_1, SWT.NONE);
-			exitItem.setText("Exit");
-			exitItem.addListener(SWT.Selection, new Listener() {
-				
-				@Override
-				public void handleEvent(Event arg0) {
-					// TODO Auto-generated method stub
-					shell.close();
-				}
-			});
-			
-			MenuItem mntmView = new MenuItem(menu, SWT.CASCADE);
-			mntmView.setText("View");
-			
-			Menu menu_2 = new Menu(mntmView);
-			mntmView.setMenu(menu_2);
-			
-			MenuItem config = new MenuItem(menu_2, SWT.NONE);
-			config.setText("Interval Data Candle ");
-			config.addListener(SWT.Selection, new Listener() {
-				
-				@Override
-				public void handleEvent(Event arg0) {
-					// TODO Auto-generated method stub
-					layout.topControl = candleComposite;
-					contentPanel.layout();
-				}
-			});
+			@Override
+			public void handleEvent(Event arg0) {
+				// TODO Auto-generated method stub
+				layout.topControl = candleComposite;
+				contentPanel.layout();
+			}
+		});
 
+		
+		MenuItem tableView = new MenuItem(menu_2, SWT.NONE);
+		tableView.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.tableView.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		tableView.addListener(SWT.Selection, new Listener() {
 			
-			MenuItem tableView = new MenuItem(menu_2, SWT.NONE);
-			tableView.setText("Interval Data Table");
-			tableView.addListener(SWT.Selection, new Listener() {
-				
-				@Override
-				public void handleEvent(Event arg0) {
-					// TODO Auto-generated method stub
-					layout.topControl = dataTableComposite;
-					contentPanel.layout();
-				}
-			});
+			@Override
+			public void handleEvent(Event arg0) {
+				// TODO Auto-generated method stub
+				layout.topControl = dataTableComposite;
+				contentPanel.layout();
+			}
+		});
+		
+		MenuItem mntmIntervalData = new MenuItem(menu_2, SWT.NONE);
+		mntmIntervalData.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmIntervalData.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		mntmIntervalData.addListener(SWT.Selection, new Listener() {
 			
-			MenuItem mntmIntervalData = new MenuItem(menu_2, SWT.NONE);
-			mntmIntervalData.setText("Interval Data Config");
-			mntmIntervalData.addListener(SWT.Selection, new Listener() {
-				
-				@Override
-				public void handleEvent(Event arg0) {
-					// TODO Auto-generated method stub
-					layout.topControl = configComposite;
-					contentPanel.layout();
-				}
-			});
+			@Override
+			public void handleEvent(Event arg0) {
+				// TODO Auto-generated method stub
+				layout.topControl = configComposite;
+				contentPanel.layout();
+			}
+		});
+		
+		MenuItem mntmXmlConfigGrafikus = new MenuItem(menu_2, SWT.NONE);
+		mntmXmlConfigGrafikus.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmXmlConfigGrafikus.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		mntmXmlConfigGrafikus.addListener(SWT.Selection, new Listener() {
 			
-			MenuItem mntmXmlConfigGrafikus = new MenuItem(menu_2, SWT.NONE);
-			mntmXmlConfigGrafikus.setText("Xml Config");
-			mntmXmlConfigGrafikus.addListener(SWT.Selection, new Listener() {
-				
-				@Override
-				public void handleEvent(Event arg0) {
-					// TODO Auto-generated method stub
-					layout.topControl = xmlConfigComposite;
-					contentPanel.layout();
-				}
-			});
+			@Override
+			public void handleEvent(Event arg0) {
+				// TODO Auto-generated method stub
+				layout.topControl = xmlConfigComposite;
+				contentPanel.layout();
+			}
+		});
+		
+		MenuItem mntmSettings = new MenuItem(menu, SWT.CASCADE);
+		mntmSettings.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmSettings.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		
+		Menu menu_3 = new Menu(mntmSettings);
+		mntmSettings.setMenu(menu_3);
+		
+		MenuItem mntmAccount = new MenuItem(menu_3, SWT.NONE);
+		mntmAccount.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmAccount.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		mntmAccount.addListener(SWT.Selection, new Listener() {
 			
-			MenuItem mntmSettings = new MenuItem(menu, SWT.CASCADE);
-			mntmSettings.setText("Settings");
+			@Override
+			public void handleEvent(Event arg0) {
+				// TODO Auto-generated method stub
+				layout.topControl = accountComposite;
+				contentPanel.layout();
+			}
+		});
+		
+		MenuItem mntmProperties = new MenuItem(menu_3, SWT.NONE);
+		mntmProperties.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmProperties.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		mntmProperties.addListener(SWT.Selection, new Listener() {
 			
-			Menu menu_3 = new Menu(mntmSettings);
-			mntmSettings.setMenu(menu_3);
-			
-			MenuItem mntmAccount = new MenuItem(menu_3, SWT.NONE);
-			mntmAccount.setText("Account");
-			mntmAccount.addListener(SWT.Selection, new Listener() {
-				
-				@Override
-				public void handleEvent(Event arg0) {
-					// TODO Auto-generated method stub
-					layout.topControl = accountComposite;
-					contentPanel.layout();
-				}
-			});
-			
-			MenuItem mntmProperties = new MenuItem(menu_3, SWT.NONE);
-			mntmProperties.setText("Preferences");
-			mntmProperties.addListener(SWT.Selection, new Listener() {
-				
-				@Override
-				public void handleEvent(Event arg0) {
-					// TODO Auto-generated method stub
-					layout.topControl = settingsComposite;
-					contentPanel.layout();
-				}
-			});
+			@Override
+			public void handleEvent(Event arg0) {
+				// TODO Auto-generated method stub
+				layout.topControl = settingsComposite;
+				contentPanel.layout();
+			}
+		});
 	}
 
 }

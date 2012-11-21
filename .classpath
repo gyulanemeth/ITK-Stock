@@ -2,13 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jdom/jdom-2.0.3.jar" sourcepath="lib/jdom/jdom-2.0.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jdom/jdom-2.0.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jdom/jdom-2.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/jsoup/jsoup-1.7.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jsoup/jsoup-1.7.1.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart/jcommon-1.0.16.jar"/>
-	<classpathentry kind="lib" path="lib/jfreechart/jfreechart-1.0.13-swt.jar" sourcepath="lib/jfreechart/swt"/>
-	<classpathentry kind="lib" path="lib/jfreechart/jfreechart-1.0.13.jar" sourcepath="lib/jfreechart/source"/>
+	<classpathentry kind="lib" path="lib/jfreechart/jfreechart-1.0.13-swt.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart/swtgraphics2d.jar"/>
-	<classpathentry kind="lib" path="lib/jsoup/jsoup-1.7.1.jar" sourcepath="lib/jsoup/jsoup-1.7.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/mysql/mysql-connector-java-5.1.22-bin.jar"/>
-	<classpathentry kind="lib" path="lib/swt/swt.jar" sourcepath="lib/swt/src.zip"/>
+	<classpathentry kind="lib" path="lib/swt/swt.jar" sourcepath="lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
