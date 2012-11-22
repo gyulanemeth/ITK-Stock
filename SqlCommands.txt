@@ -14,7 +14,7 @@ CREATE TABLE StockData (
 	close DOUBLE,
 	volume LONG,
 
-	INDEX (papername, date),
+	INDEX (paper_name, date),
 	INDEX (date)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 

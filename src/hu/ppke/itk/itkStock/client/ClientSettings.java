@@ -25,10 +25,6 @@ public enum ClientSettings {
 	
 	private int    port;
 	private String hostname;
-	private String dbHost;
-	private String dbName;
-	private String dbUser;
-	private String dbPass;
 	
 	/**
 	 * Consturctor<br>
@@ -74,10 +70,6 @@ public enum ClientSettings {
 
 		port   = xmlGetPort(root);
 		hostname = xmlGetHostname(root);
-		dbHost = xmlGetDbHost(root);
-		dbName = xmlGetDbName(root);
-		dbUser = xmlGetDbUser(root);
-		dbPass = xmlGetDbPass(root);
 	}
 	
 	/**
@@ -94,12 +86,6 @@ public enum ClientSettings {
 		root.addContent(new Element("connection")
 		     .addContent(new Element("port").setText("3306"))
 		     .addContent(new Element("hostname").setText("localhost")));
-		root.addContent(new Element("db")
-			.addContent(new Element("dbHost").setText("localhost"))
-			.addContent(new Element("dbName").setText("itkStock"))
-			.addContent(new Element("dbUser").setText("itkStock"))
-			.addContent(new Element("dbPass").setText("itkStock"))
-		);
 		
 		makeFile(root);
 		
@@ -125,12 +111,6 @@ public enum ClientSettings {
 		root.addContent(new Element("connection")
 		    .addContent(new Element("port").setText(Integer.toString(port)))
 		    .addContent(new Element("hostname").setText("localhost")));
-		root.addContent(new Element("db")
-			.addContent(new Element("dbHost").setText(dbHost))
-			.addContent(new Element("dbName").setText(dbName))
-			.addContent(new Element("dbUser").setText(dbUser))
-			.addContent(new Element("dbPass").setText(dbPass))
-		);
 		
 		makeFile(root);
 	}
@@ -178,23 +158,7 @@ public enum ClientSettings {
 	{
 		return root.getChild("connection").getChildText("host");
 	}
-	private String xmlGetDbHost(Element root)
-	{
-		return root.getChild("db").getChildText("dbHost");
-	}
-	private String xmlGetDbName(Element root)
-	{
-		return root.getChild("db").getChildText("dbName");
-	}
-	private String xmlGetDbUser(Element root)
-	{
-		return root.getChild("db").getChildText("dbUser");
-	}
-	private String xmlGetDbPass(Element root)
-	{
-		return root.getChild("db").getChildText("dbPass");
-	}
-	
+
 	//setter methods
 	public void setPort(int dbPort) {
 		this.port = dbPort;
@@ -202,22 +166,6 @@ public enum ClientSettings {
 	}
 	public void setHostname(String hostname) {
 		this.hostname = hostname;
-		reparseConfig();
-	}
-	public void setDbHost(String dbHost) {
-		this.dbHost = dbHost;
-		reparseConfig();
-	}
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
-		reparseConfig();
-	}
-	public void setDbUser(String dbUser) {
-		this.dbUser = dbUser;
-		reparseConfig();
-	}
-	public void setDbPass(String dbPass) {
-		this.dbPass = dbPass;
 		reparseConfig();
 	}
 	
@@ -228,18 +176,6 @@ public enum ClientSettings {
 	public String getHostname() {
 		return hostname;
 	}
-	public String getDbHost() {
-		return dbHost;
-	}	
-	public String getDbName() {
-		return dbName;
-	}
-	public String getDbUser() {
-		return dbUser;
-	}	
-	public String getDbPass() {
-		return dbPass;
-	}
 	
 	//toString method, debug purpose only
 	public String toString()
@@ -248,10 +184,6 @@ public enum ClientSettings {
 		sb.append("==ClientConfig==\n");
 		sb.append("port: ").append(Integer.toString(port));
 		sb.append(", hostname: ").append(hostname);
-		sb.append("\ndbHost: ").append(dbHost);
-		sb.append(", dbName: ").append(dbName);
-		sb.append("\ndbUser: ").append(dbUser);
-		sb.append(", dbPass: ").append(dbPass);
 		sb.append("\n================");
 		return sb.toString();
 	}
