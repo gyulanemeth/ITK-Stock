@@ -24,8 +24,7 @@ public class ClientSettingsComposite extends Composite{
 		Label portText = new Label(comp, SWT.NONE);
 		portText.setText("Port");
 		final Text portGetText = new Text(comp, SWT.BORDER);
-		portGetText.setText("");
-		//portGetText.setText(""+ClientSettings.INSTANCE.getPort());
+		portGetText.setText(""+ClientSettings.INSTANCE.getPort());
 		Label hostText = new Label(comp, SWT.NONE);
 		hostText.setText("Host");
 		final Text hostGetText = new Text(comp, SWT.BORDER);

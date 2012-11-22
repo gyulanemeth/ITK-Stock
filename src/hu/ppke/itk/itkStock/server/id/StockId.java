@@ -2,6 +2,7 @@ package hu.ppke.itk.itkStock.server.id;
 
 import hu.ppke.itk.itkStock.SaveDailyDatas.StockDataObserver;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 public class StockId implements StockDataObserver {
 
-	private Map<Short, String> keyToValue = new HashMap<Short, String>();
+	private static Map<Short, String> keyToValue = new HashMap<Short, String>();
 	private Map<String, Short> valueToKey = new HashMap<String, Short>();
 	private short key = 1;
 	private boolean filled = false;
@@ -125,6 +126,11 @@ public class StockId implements StockDataObserver {
 		} else {
 			// TODO: ha nem kezdeti feltöltés, nevek, árak frissítése
 		}
+		
+	}
+	
+	public static Collection<String> getStocks(){
+		return keyToValue.values();
 	}
 
 }

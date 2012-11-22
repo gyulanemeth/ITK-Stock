@@ -11,6 +11,6 @@
 	<classpathentry kind="lib" path="lib/jfreechart/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart/swtgraphics2d.jar"/>
 	<classpathentry kind="lib" path="lib/mysql/mysql-connector-java-5.1.22-bin.jar"/>
-	<classpathentry kind="lib" path="lib/swt/swt.jar" sourcepath="lib"/>
+	<classpathentry kind="lib" path="lib/swt/swt.jar" sourcepath="lib/swt"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
