@@ -1,6 +1,9 @@
 package hu.ppke.itk.itkStock.gui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -25,6 +28,7 @@ public class LogInComposite extends Composite{
 		super(parent, style);
 		// TODO Auto-generated constructor stub
 		this.setLayout(new GridLayout(2, false));
+		this.addKeyListener(new MyKeyListener());
 		label1=new Label(this, SWT.NONE);
 		label1.setText("User Name: ");
 	    
@@ -40,6 +44,7 @@ public class LogInComposite extends Composite{
 	    password.setTextLimit(30);
 	    Button button=new Button(this,SWT.PUSH);
 		button.setText("Submit");
+		
 		button.addListener(SWT.Selection, new Listener() {
 		      public void handleEvent(Event event) {
 				  String selected=username.getText();
@@ -68,11 +73,54 @@ public class LogInComposite extends Composite{
 				}
 			});
 		
+			username.addKeyListener(new MyKeyListener());
+			password.addKeyListener(new MyKeyListener());
 		    username.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		    password.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		    label1.pack();
 		    label2.pack();
 		    this.pack();
 	}
+	
 
+	private class MyKeyListener implements KeyListener{
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			if(arg0.keyCode==13){
+			String selected=username.getText();
+	          String selected1=password.getText();
+			  
+		if(selected==""){ 
+			MessageBox messageBox = new MessageBox(getShell(), SWT.OK |SWT.ICON_WARNING |SWT.CANCEL);
+				messageBox.setMessage("Enter the User Name");
+				 messageBox.open();
+		}
+		if(selected1==""){
+	             MessageBox messageBox = new MessageBox(getShell(), SWT.OK |SWT.ICON_WARNING |SWT.CANCEL);
+				messageBox.setMessage("Enter the Password");
+				 messageBox.open();
+				 }
+		if(selected!="" && selected1 != "")
+		{
+		MessageBox messageBox = new MessageBox(getShell(), SWT.OK | SWT.CANCEL);
+	        messageBox.setText("Login Form");
+			messageBox.setMessage("Welcome:" + username.getText());
+	        messageBox.open();
+	       MainGui.initializeMenu();
+	       MainGui.layout.topControl = MainGui.mainMenuComposite;
+	       getParent().layout();
+			}
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+		}
+	}
+
+		
 }
+
