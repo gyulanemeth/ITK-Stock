@@ -3,6 +3,7 @@ package hu.ppke.itk.itkStock.gui;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Panel;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
+
+import javax.swing.BoxLayout;
 
 import hu.ppke.itk.itkStock.server.db.historicData.StockData;
 import hu.ppke.itk.itkStock.server.db.historicData.StockDate;
@@ -21,6 +24,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -38,6 +42,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -47,7 +52,7 @@ import org.jfree.ui.ApplicationFrame;
 
 public class IntervalDataComposite extends Composite{
 
-	private static SortedMap<StockDate, SortedMap<StockTime, Transaction>> fetch;
+	private static Map<StockDate, Map<StockTime, Transaction>> fetch;
     private JFreeChart localJFreeChart;
 	
 	public IntervalDataComposite(Composite parent, int style) {
@@ -55,12 +60,12 @@ public class IntervalDataComposite extends Composite{
 		// TODO Auto-generated constructor stub
 		this.setLayout(new org.eclipse.swt.layout.GridLayout(1, false));
 		Composite comp = new Composite(this, SWT.NONE);
-		Composite comp1 = new Composite(this, SWT.EMBEDDED | SWT.NO_BACKGROUND);
+		final Composite comp1 = new Composite(this, SWT.EMBEDDED | SWT.NO_BACKGROUND);
 		comp.setLayout(new org.eclipse.swt.layout.GridLayout(6, false));
 		final Frame frame = SWT_AWT.new_Frame(comp1);
 		frame.setPreferredSize(new Dimension(500, 600));
 		final Combo combo = new Combo(comp, SWT.DROP_DOWN);
-		
+		combo.add("a");
 		 for(String s : StockId.getStocks()){
 			  combo.add(s);
 		  }
@@ -80,7 +85,7 @@ public class IntervalDataComposite extends Composite{
 			@Override
 			public void handleEvent(Event arg0) {
 				
-				try {
+				/*try {
 					Map<String, SortedMap<StockDate, SortedMap<StockTime, Transaction>>> fetchData = StockData.fetchData(combo.getText(), 
 									new StockDate(calendarFrom.getYear(), calendarFrom.getMonth(), calendarFrom.getDay()), 
 									new StockDate(calendarTo.getYear(), calendarTo.getMonth(), calendarTo.getDay()));
@@ -93,7 +98,29 @@ public class IntervalDataComposite extends Composite{
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}				
+				}	*/
+				Map<StockTime, Transaction> adat = new HashMap<StockTime, Transaction>();
+				Transaction trans = new Transaction(10.12, 300);
+				adat.put(new StockTime(12, 20, 11), trans);
+				adat.put(new StockTime(12, 24, 11), trans);
+				adat.put(new StockTime(10, 40, 11), trans);
+				fetch= new HashMap<>();
+				fetch.put(new StockDate(2012, 10, 10), adat);
+				fetch.put(new StockDate(2012, 10, 11), adat);
+				localJFreeChart = createChart("a");
+				ChartPanel localChartPanel = new ChartPanel(localJFreeChart, true, true, true, false, true);
+			    localChartPanel.setPreferredSize(new Dimension(500, 270));
+			    //frame.add(localChartPanel);
+			    DefaultPieDataset pieData = new DefaultPieDataset();
+			    Color backgroundColor = comp1.getBackground();
+			    Frame chartPanel = SWT_AWT.new_Frame(comp1);
+			    frame.setBackground(new java.awt.Color(backgroundColor.getRed(),
+                        backgroundColor.getGreen(),
+                        backgroundColor.getBlue()));
+			    frame.setLayout(new BoxLayout(frame, BoxLayout.PAGE_AXIS));
+			    frame.add(localChartPanel);
+			    frame.repaint();
+			    
 			}
 		});
 		
@@ -140,17 +167,17 @@ public class IntervalDataComposite extends Composite{
 	private static XYDataset createPriceDataset()
 	  {
 	    TimeSeries localTimeSeries = new TimeSeries("Price");
-	    Iterator iterator = fetch.keySet().iterator();
-	    Iterator dateIterator;
+	    Iterator<StockDate> iterator = fetch.keySet().iterator();
+	    Iterator<StockTime> dateIterator;
 	    double value =0;
 	    int numberOfValues=0;
 	    while(iterator.hasNext()){
-	    	SortedMap<StockTime, Transaction> dateStock = fetch.get(iterator.next());
+	    	Map<StockTime, Transaction> dateStock = fetch.get(iterator.next());
 	    	dateIterator = dateStock.keySet().iterator();
-	    	StockDate date = (StockDate) iterator.next();
+	    	StockDate date = iterator.next();
 	    	while(dateIterator.hasNext()){
-	    		StockTime time = (StockTime) dateIterator.next();
-	    		Transaction price = dateStock.get(dateIterator);
+	    		StockTime time = dateIterator.next();
+	    		Transaction price = dateStock.get(time);
 	    		value+=price.getPrice();
 	    		numberOfValues++;
 	    				}
@@ -162,16 +189,16 @@ public class IntervalDataComposite extends Composite{
 	private static IntervalXYDataset createVolumeDataset()
 	  {
 	    TimeSeries localTimeSeries = new TimeSeries("Volume");
-	    Iterator iterator = fetch.keySet().iterator();
-	    Iterator dateIterator;
+	    Iterator<StockDate> iterator = fetch.keySet().iterator();
+	    Iterator<StockTime> dateIterator;
 	    double volume =0;
 	    while(iterator.hasNext()){
-	    	SortedMap<StockTime, Transaction> dateStock = fetch.get(iterator.next());
+	    	Map<StockTime, Transaction> dateStock = fetch.get(iterator.next());
 	    	dateIterator = dateStock.keySet().iterator();
-	    	StockDate date = (StockDate) iterator.next();
+	    	StockDate date = iterator.next();
 	    	while(dateIterator.hasNext()){
-	    		StockTime time = (StockTime) dateIterator.next();
-	    		Transaction price = dateStock.get(dateIterator);
+	    		StockTime time = dateIterator.next();
+	    		Transaction price = dateStock.get(time);
 	    		volume+=price.getVolume();
 	    				}
 	    	localTimeSeries.add(new Day(date.getDay(), date.getMonth(), date.getYear()),volume);
