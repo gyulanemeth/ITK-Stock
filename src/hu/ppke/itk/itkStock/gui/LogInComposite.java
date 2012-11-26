@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
+import java.util.ResourceBundle;
 
 public class LogInComposite extends Composite{
 
@@ -41,7 +42,7 @@ public class LogInComposite extends Composite{
 		    composite.setLayout(gl_composite);
 		    label1=new Label(composite, SWT.NONE);
 		    label1.setBounds(5, 8, 64, 15);
-		    label1.setText("User Name: ");
+		    label1.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("LogInComposite.label1.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		    label1.pack();
 		    
 		    username = new Text(composite, SWT.SINGLE | SWT.BORDER);
@@ -53,7 +54,7 @@ public class LogInComposite extends Composite{
 		    	username.addKeyListener(new MyKeyListener());
 		    label2=new Label(composite, SWT.NONE);
 		    label2.setBounds(5, 34, 56, 15);
-		    label2.setText("Password: ");
+		    label2.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("LogInComposite.label2.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		    label2.pack();
 		    password = new Text(composite, SWT.SINGLE | SWT.BORDER);
 		    password.setBounds(74, 31, 76, 21);
@@ -63,7 +64,7 @@ public class LogInComposite extends Composite{
 		    password.addKeyListener(new MyKeyListener());
 		    Button button=new Button(composite,SWT.PUSH);
 		    button.setBounds(5, 57, 50, 25);
-		    button.setText("Submit");
+		    button.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("LogInComposite.button.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		    new Label(composite, SWT.NONE);
 		    
 		    button.addListener(SWT.Selection, new Listener() {

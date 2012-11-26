@@ -54,13 +54,13 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.ui.ApplicationFrame;
 import org.eclipse.swt.layout.GridData;
+import java.util.ResourceBundle;
 
 public class IntervalDataComposite extends Composite{
 
 	private static Map<StockDate, Map<StockTime, Transaction>> fetch;
     private JFreeChart localJFreeChart;
     private ChartComposite comp1;
-	
 	public IntervalDataComposite(Composite parent, int style) {
 		super(parent, style);
 		// TODO Auto-generated constructor stub
@@ -73,21 +73,21 @@ public class IntervalDataComposite extends Composite{
 		comp1.setLayoutData(gd_comp1);
 		comp.setLayout(new org.eclipse.swt.layout.GridLayout(6, false));
 		final Combo combo = new Combo(comp, SWT.DROP_DOWN);
-		combo.add("a");
-		 for(String s : StockId.getStocks()){
+		combo.add("Random adatok");
+		for(String s : StockId.getStocks()){
 			  combo.add(s);
-		  }
+		 }
 		 
 		Label from = new Label(comp, SWT.None);
-		from.setText("From: ");
+		from.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("IntervalDataComposite.from.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		final DateTime calendarFrom = new DateTime (comp, SWT.DROP_DOWN);
 		
 		Label to = new Label(comp, SWT.None);
-		to.setText("To: ");
+		to.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("IntervalDataComposite.to.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		final DateTime calendarTo = new DateTime(comp, SWT.DROP_DOWN);
 		
 		Button requestButton = new Button(comp, SWT.None);
-		requestButton.setText("Request");
+		requestButton.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("IntervalDataComposite.requestButton.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		requestButton.addListener(SWT.Selection, new Listener() {
 			
 			@Override
@@ -111,12 +111,11 @@ public class IntervalDataComposite extends Composite{
 					Random random = new Random();
 					Map<StockTime, Transaction> adat = new HashMap<StockTime, Transaction>();
 					Transaction trans = new Transaction(random.nextDouble(), random.nextInt(500));
-					System.out.println(random.nextInt(100));
 					adat.put(new StockTime(random.nextInt(23)+1, random.nextInt(58)+1, random.nextInt(99)+1), trans);
 					fetch.put(new StockDate(2012, random.nextInt(11)+1, random.nextInt(26)+1), adat);
 				}
 
-				localJFreeChart = createChart("Proba adatok");
+				localJFreeChart = createChart(combo.getText());
 				comp1.setChart(localJFreeChart);
 				comp1.forceRedraw();
 

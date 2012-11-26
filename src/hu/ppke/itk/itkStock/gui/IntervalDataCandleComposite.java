@@ -13,12 +13,12 @@ public class IntervalDataCandleComposite extends Composite{
 	public IntervalDataCandleComposite(Composite parent, int style) {
 		super(parent, style);
 		//TODO make a dialog where the user can specify the paper_name and the date
-		CandleStickChart csc = new CandleStickChart("MTELEKOM", new StockDate(2010, 12, 30));
-		JFreeChart chart = csc.createChart();
-	    ChartComposite comp = new ChartComposite(this, SWT.NONE);
-	    comp.setChart(chart);
-		comp.pack();
-	    comp.setSize(800, 550);
+//		CandleStickChart csc = new CandleStickChart("MTELEKOM", new StockDate(2010, 12, 30));
+//		JFreeChart chart = csc.createChart();
+//	    ChartComposite comp = new ChartComposite(this, SWT.NONE);
+//	    comp.setChart(chart);
+//	    comp.pack();
+//	    comp.setSize(800, 550);
 	}
 
 }
