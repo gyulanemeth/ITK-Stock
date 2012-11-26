@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import java.util.ResourceBundle;
+import org.eclipse.swt.widgets.Label;
 
 public class MainGui {
 
@@ -38,6 +39,7 @@ public class MainGui {
 	 private static Menu menu;
 	 public static final int width = 800;
 	 public static final int height = 600;
+	 static Menu menu_2;
 	/**
 	 * @param args
 	 */
@@ -66,8 +68,10 @@ public class MainGui {
 	  
 		
 		logIn = new LogInComposite(contentPanel,SWT.NONE);
+		logIn.setBounds(300, 200, 400, 100);
 		//logIn.setLayout(new FillLayout());
-		logIn.setBounds(200, 200, 400, 100);
+		
+		new Label(logIn, SWT.NONE);
 		
 		candleComposite = new IntervalDataCandleComposite(contentPanel, SWT.NONE);
 		
@@ -91,6 +95,19 @@ public class MainGui {
 			Menu menu_1 = new Menu(fileMenu);
 			fileMenu.setMenu(menu_1);
 			
+			MenuItem logInmenu = new MenuItem(menu_1, SWT.NONE);
+			logInmenu.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.logInmenu.text")); //$NON-NLS-1$ //$NON-NLS-2$
+			logInmenu.addListener(SWT.Selection, new Listener() {
+				
+				@Override
+				public void handleEvent(Event arg0) {
+					// TODO Auto-generated method stub
+					layout.topControl = logIn;
+					logIn.setBounds(300, 200, 400, 100);
+					contentPanel.layout();
+				}
+			});
+			
 			MenuItem exitItem = new MenuItem(menu_1, SWT.NONE);
 			exitItem.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.exitItem.text")); //$NON-NLS-1$ //$NON-NLS-2$
 			exitItem.addListener(SWT.Selection, new Listener() {
@@ -101,6 +118,24 @@ public class MainGui {
 					shell.close();
 				}
 			});
+			MenuItem mntmView = new MenuItem(menu, SWT.CASCADE);
+			mntmView.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmView.text")); //$NON-NLS-1$ //$NON-NLS-2$
+			
+			menu_2 = new Menu(mntmView);
+			mntmView.setMenu(menu_2);
+			
+			MenuItem mntmXmlConfigGrafikus = new MenuItem(menu_2, SWT.NONE);
+			mntmXmlConfigGrafikus.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmXmlConfigGrafikus.text")); //$NON-NLS-1$ //$NON-NLS-2$
+			mntmXmlConfigGrafikus.addListener(SWT.Selection, new Listener() {
+				
+				@Override
+				public void handleEvent(Event arg0) {
+					// TODO Auto-generated method stub
+					layout.topControl = xmlConfigComposite;
+					contentPanel.layout();
+				}
+			});
+		
 		shell.pack();
 		//shell.setSize(800, 600);
 		
@@ -116,11 +151,7 @@ public class MainGui {
 	public static void initializeMenu(){
 		 
 			
-		MenuItem mntmView = new MenuItem(menu, SWT.CASCADE);
-		mntmView.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmView.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		Menu menu_2 = new Menu(mntmView);
-		mntmView.setMenu(menu_2);
 		
 		MenuItem config = new MenuItem(menu_2, SWT.NONE);
 		config.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.config.text")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -159,17 +190,7 @@ public class MainGui {
 			}
 		});
 		
-		MenuItem mntmXmlConfigGrafikus = new MenuItem(menu_2, SWT.NONE);
-		mntmXmlConfigGrafikus.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmXmlConfigGrafikus.text")); //$NON-NLS-1$ //$NON-NLS-2$
-		mntmXmlConfigGrafikus.addListener(SWT.Selection, new Listener() {
-			
-			@Override
-			public void handleEvent(Event arg0) {
-				// TODO Auto-generated method stub
-				layout.topControl = xmlConfigComposite;
-				contentPanel.layout();
-			}
-		});
+		
 		
 		MenuItem mntmSettings = new MenuItem(menu, SWT.CASCADE);
 		mntmSettings.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmSettings.text")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -201,5 +222,4 @@ public class MainGui {
 			}
 		});
 	}
-
 }

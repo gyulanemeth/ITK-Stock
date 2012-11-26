@@ -14,6 +14,10 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormAttachment;
 
 public class LogInComposite extends Composite{
 
@@ -27,59 +31,68 @@ public class LogInComposite extends Composite{
 		
 		super(parent, style);
 		// TODO Auto-generated constructor stub
-		this.setLayout(new GridLayout(2, false));
+		//this.setLayout(new GridLayout(2, false));
 		this.addKeyListener(new MyKeyListener());
-		label1=new Label(this, SWT.NONE);
-		label1.setText("User Name: ");
-	    
-	    username = new Text(this, SWT.SINGLE | SWT.BORDER);
-	    username.setText("");
-	    username.setTextLimit(30);
-	    label2=new Label(this, SWT.NONE);
-		label2.setText("Password: ");
-	    
-	    password = new Text(this, SWT.SINGLE | SWT.BORDER);
-	    System.out.println(password.getEchoChar());
-	    password.setEchoChar('*');
-	    password.setTextLimit(30);
-	    Button button=new Button(this,SWT.PUSH);
-		button.setText("Submit");
-		
-		button.addListener(SWT.Selection, new Listener() {
-		      public void handleEvent(Event event) {
-				  String selected=username.getText();
-		          String selected1=password.getText();
-				  
-			if(selected==""){ 
-				MessageBox messageBox = new MessageBox(getShell(), SWT.OK |SWT.ICON_WARNING |SWT.CANCEL);
-					messageBox.setMessage("Enter the User Name");
-					 messageBox.open();
-			}
-			if(selected1==""){
-		             MessageBox messageBox = new MessageBox(getShell(), SWT.OK |SWT.ICON_WARNING |SWT.CANCEL);
-					messageBox.setMessage("Enter the Password");
-					 messageBox.open();
-					 }
-			if(selected!="" && selected1 != "")
-			{
-			MessageBox messageBox = new MessageBox(getShell(), SWT.OK | SWT.CANCEL);
-		        messageBox.setText("Login Form");
-				messageBox.setMessage("Welcome:" + username.getText());
-		        messageBox.open();
-		       MainGui.initializeMenu();
-		       MainGui.layout.topControl = MainGui.mainMenuComposite;
-		       getParent().layout();
-				}
-				}
-			});
-		
-			username.addKeyListener(new MyKeyListener());
-			password.addKeyListener(new MyKeyListener());
-		    username.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		    password.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		    label1.pack();
-		    label2.pack();
 		    this.pack();
+		    setLayout(new FormLayout());
+		    Composite composite = new Composite(this, SWT.NONE);
+		    composite.setLayoutData(new FormData());
+		    GridLayout gl_composite = new GridLayout(2, false);
+		    composite.setLayout(gl_composite);
+		    label1=new Label(composite, SWT.NONE);
+		    label1.setBounds(5, 8, 64, 15);
+		    label1.setText("User Name: ");
+		    label1.pack();
+		    
+		    username = new Text(composite, SWT.SINGLE | SWT.BORDER);
+		    username.setBounds(74, 5, 76, 21);
+		    username.setText("");
+		    username.setTextLimit(30);
+		    username.setFocus();
+		    
+		    	username.addKeyListener(new MyKeyListener());
+		    label2=new Label(composite, SWT.NONE);
+		    label2.setBounds(5, 34, 56, 15);
+		    label2.setText("Password: ");
+		    label2.pack();
+		    password = new Text(composite, SWT.SINGLE | SWT.BORDER);
+		    password.setBounds(74, 31, 76, 21);
+		    System.out.println(password.getEchoChar());
+		    password.setEchoChar('*');
+		    password.setTextLimit(30);
+		    password.addKeyListener(new MyKeyListener());
+		    Button button=new Button(composite,SWT.PUSH);
+		    button.setBounds(5, 57, 50, 25);
+		    button.setText("Submit");
+		    new Label(composite, SWT.NONE);
+		    
+		    button.addListener(SWT.Selection, new Listener() {
+		          public void handleEvent(Event event) {
+		    		  String selected=username.getText();
+		              String selected1=password.getText();
+		    		  
+		    	if(selected==""){ 
+		    		MessageBox messageBox = new MessageBox(getShell(), SWT.OK |SWT.ICON_WARNING |SWT.CANCEL);
+		    			messageBox.setMessage("Enter the User Name");
+		    			 messageBox.open();
+		    	}
+		    	if(selected1==""){
+		                 MessageBox messageBox = new MessageBox(getShell(), SWT.OK |SWT.ICON_WARNING |SWT.CANCEL);
+		    			messageBox.setMessage("Enter the Password");
+		    			 messageBox.open();
+		    			 }
+		    	if(selected!="" && selected1 != "")
+		    	{
+		    	MessageBox messageBox = new MessageBox(getShell(), SWT.OK | SWT.CANCEL);
+		            messageBox.setText("Login Form");
+		    		messageBox.setMessage("Welcome:" + username.getText());
+		            messageBox.open();
+		           MainGui.initializeMenu();
+		           MainGui.layout.topControl = MainGui.mainMenuComposite;
+		           getParent().layout();
+		    		}
+		    		}
+		    	});
 	}
 	
 
@@ -120,7 +133,5 @@ public class LogInComposite extends Composite{
 			// TODO Auto-generated method stub
 		}
 	}
-
-		
 }
 
