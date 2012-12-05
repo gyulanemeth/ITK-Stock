@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsi:client_config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ClientConfig.xsd">
   <connection>
-    <port>3306</port>
+    <port>3122</port>
     <hostname>localhost</hostname>
   </connection>
-  
   <db>
     <dbHost>localhost</dbHost>
     <dbName>itkStock</dbName>

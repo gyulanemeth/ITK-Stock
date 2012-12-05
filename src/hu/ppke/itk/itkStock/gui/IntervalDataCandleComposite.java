@@ -1,17 +1,24 @@
 package hu.ppke.itk.itkStock.gui;
 
+import hu.ppke.itk.itkStock.gui.chart.candlestick.CandleStickChart;
+import hu.ppke.itk.itkStock.server.db.historicData.StockDate;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.jfree.chart.JFreeChart;
+import org.jfree.experimental.chart.swt.ChartComposite;
 
 public class IntervalDataCandleComposite extends Composite{
 
 	public IntervalDataCandleComposite(Composite parent, int style) {
 		super(parent, style);
-		// TODO Auto-generated constructor stub
-		Label label = new Label(this, SWT.NONE);
-		label.setText("Intervallum adatok japán gyertyás megjelenítése");
-		label.pack();
+		//TODO make a dialog where the user can specify the paper_name and the date
+		CandleStickChart csc = new CandleStickChart("MOL", new StockDate(2006, 06, 06));
+		JFreeChart chart = csc.createChart();
+	    ChartComposite comp = new ChartComposite(this, SWT.NONE);
+	    comp.setChart(chart);
+	    comp.pack();
+	    comp.setSize(800, 550);
 	}
 
 }

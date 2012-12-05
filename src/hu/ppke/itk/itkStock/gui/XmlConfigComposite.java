@@ -1,6 +1,7 @@
 package hu.ppke.itk.itkStock.gui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -27,6 +28,12 @@ import org.jdom2.output.XMLOutputter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import org.eclipse.swt.widgets.ExpandBar;
+import org.eclipse.swt.widgets.ExpandItem;
 
 
 public class XmlConfigComposite extends Composite{
@@ -49,11 +56,13 @@ public class XmlConfigComposite extends Composite{
 		super(parent, style);
 		
 		parseXML(xfile);
+		Locale l = new Locale("hu", "HU"); 
+		actualLang="hu_HU";
 		
 		Label label_title = new Label(this, SWT.CENTER);
 		label_title.setSize(430, 15);
 		label_title.setLocation(10, 10);
-		label_title.setText("Connection and language settings");
+		label_title.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("XmlConfigComposite.label_title.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		label_title.pack();
 		
 		Group groupConnection = new Group(this, SWT.NONE);
@@ -61,14 +70,14 @@ public class XmlConfigComposite extends Composite{
 		
 		Label host_address = new Label(groupConnection, SWT.NONE);
 		host_address.setBounds(10, 24, 112, 15);
-		host_address.setText("Host address:");
+		host_address.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("XmlConfigComposite.host_address.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		textInput_hostAddress = new Text(groupConnection, SWT.BORDER);
 		textInput_hostAddress.setBounds(128, 21, 176, 21);
 		
 		Label port = new Label(groupConnection, SWT.NONE);
-		port.setBounds(10, 62, 112, 15);
-		port.setText("Host port:");
+		port.setBounds(10, 59, 112, 15);
+		port.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("XmlConfigComposite.port.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		textInput_hostPort = new Text(groupConnection, SWT.BORDER);
 		textInput_hostPort.setBounds(128, 56, 76, 21);
@@ -77,27 +86,25 @@ public class XmlConfigComposite extends Composite{
 		groupLanguage.setBounds(10, 133, 430, 101);
 		
 		Label label_lang = new Label(groupLanguage, SWT.NONE);
-		label_lang.setBounds(10, 30, 156, 15);
-		label_lang.setText("Set language and country:");
+		label_lang.setBounds(10, 30, 160, 15);
+		label_lang.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("XmlConfigComposite.label_lang.text"));
 		
-		ToolBar toolBar = new ToolBar(groupLanguage, SWT.FLAT | SWT.RIGHT);
-		toolBar.setBounds(10, 50, 142, 23);
+		final Combo languagesDropDownList = new Combo(groupLanguage, SWT.DROP_DOWN);
+		languagesDropDownList.setLocation(10, 50);
+		/*
+		for (int i = 0; i < 4; i++) {
+			languagesDropDownList.add("item"+i);
+		}*/
 		
-		final ToolItem item = new ToolItem(toolBar, SWT.DROP_DOWN);
-		item.setText("English - International");
+		languagesDropDownList.pack();
 		
-		DropdownSelectionListener listenerOne = new DropdownSelectionListener(item);
-	    listenerOne.add("English - United States");
-	    listenerOne.add("Hungarian");
-	    listenerOne.add("Slovakian");
-	    item.addSelectionListener(listenerOne);
-		
-		
-		toolBar.pack();
-		
+		for(String s : listLangs()){
+			languagesDropDownList.add(s);
+		}
+	    
 		Button btnSave = new Button(this, SWT.NONE);
 		btnSave.setBounds(200, 246, 50, 25);
-		btnSave.setText("Save");
+		btnSave.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("XmlConfigComposite.btnSave.text"));
 		
 		info = new Label(this, SWT.NONE);
 		info.setBounds(126, 277, 200, 15);
@@ -109,7 +116,7 @@ public class XmlConfigComposite extends Composite{
 				if(isNumeric(textInput_hostPort.getText()) && textInput_hostAddress.getText() != null && textInput_hostPort.getText() != null){
 				updateXML(textInput_hostAddress.getText(), 
 						  textInput_hostPort.getText(), 
-						  item.getText());
+						  languagesDropDownList.getText());
 				} else {
 					if(!isNumeric(textInput_hostPort.getText())){
 						info.setText("Port is not a number!");
@@ -162,7 +169,7 @@ public class XmlConfigComposite extends Composite{
 		//update host if needed
 		if(getActualHost().equals(host)){
 			//do nothing
-			//jelenleg is ugyanaz a nyelv vagyon belõve, nincs szükség módosításra
+			//jelenleg is ugyanaz a nyelv vagyon belÅ‘ve, nincs szÃ¼ksÃ©g  mÃ³dosÃ­tÃ¡sra
 		} else {
 			Element hostElement = rootElement.getChild("connection").getChild("hostname");
 			hostElement.setText(host);
@@ -178,13 +185,12 @@ public class XmlConfigComposite extends Composite{
 		}
 		
 		//update lang if needed
-		//if(actualLang.equals(lang)){
+		if(actualLang.equals(lang)){
 			//do nothing
-		//} else{
-			//még nem felvett attribútúm!!!
-			//Element langElement = rootElement.getChild("lang");
-			//langElement.setText(lang);
-		//}
+		} else{
+			Element langElement = rootElement.getChild("localization").getChild("language");
+			langElement.setText(lang);
+		}
 		
 		XMLOutputter xmlOutput = new XMLOutputter();
 		 
@@ -198,7 +204,50 @@ public class XmlConfigComposite extends Composite{
 		}
 		
 	}
+	/**
+	 * 
+	 * @return (LinkedList) language files
+	 */
+	public LinkedList<String> listLangs(){
+		
+		String path = ".\\src\\hu\\ppke\\itk\\itkStock\\gui";
+		
+		String files;
+		File folder = new File(path);
+		File[] listOfFiles = folder.listFiles(); 
+		
+		LinkedList<String> langFiles = new LinkedList<String>();
+		LinkedList<String> temp = new LinkedList<String>();
+		
+		for (int i = 0; i < listOfFiles.length; i++){
+			
+			if (listOfFiles[i].isFile()){
+				files = listOfFiles[i].getName();
+				if (files.endsWith(".properties")){
+		          langFiles.add(files);
+		        }
+		    }
+		}
+		
+		for (String s : langFiles) {
+			temp.add(s.substring(0, s.indexOf('.')));
+		}
+		
+		langFiles.clear();
+		
+		for (String s : temp) {
+			langFiles.add(s.substring(s.length()-5));
+		}
+		
+		langFiles.add(langFiles.indexOf("sages")+1, "default");
+		langFiles.remove("sages");
+		return langFiles;
+	}
 	
+	/**
+	 * Public Getter - Gets the actual port number
+	 * @return (String) actualPort
+	 */
 	public String getActualPort() {
 		return actualPort;
 	}
@@ -214,40 +263,7 @@ public class XmlConfigComposite extends Composite{
 	public void setActualHost(String actualHost) {
 		this.actualHost = actualHost;
 	}
-
-
-
-	class DropdownSelectionListener extends SelectionAdapter {
-		  private ToolItem dropdown;
-		  private Menu menu;
-		  
-		  public DropdownSelectionListener(ToolItem dropdown) {
-		    this.dropdown = dropdown;
-		    menu = new Menu(dropdown.getParent().getShell());
-		  }
-
-		  public void add(String item) {
-		    MenuItem menuItem = new MenuItem(menu, SWT.NONE);
-		    menuItem.setText(item);
-		    menuItem.addSelectionListener(new SelectionAdapter() {
-		      public void widgetSelected(SelectionEvent event) {
-		        MenuItem selected = (MenuItem) event.widget;
-		        dropdown.setText(selected.getText());
-		      }
-		    });
-		  }
-
-		  public void widgetSelected(SelectionEvent event) {
-		    if (event.detail == SWT.ARROW) {
-		      ToolItem item = (ToolItem) event.widget;
-		      Rectangle rect = item.getBounds();
-		      Point pt = item.getParent().toDisplay(new Point(rect.x, rect.y));
-		      menu.setLocation(pt.x, pt.y + rect.height);
-		      menu.setVisible(true);
-		    } else {
-		      System.out.println(dropdown.getText() + " Pressed");
-		    }
-		  }
-		}
+	
+	
 }
 

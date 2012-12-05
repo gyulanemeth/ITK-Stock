@@ -89,7 +89,7 @@ public class StockData {
 			else {
 				StringBuilder sb = new StringBuilder("?");
 				for(int i=1; i<tickers.length; ++i) sb.append(", ?");
-				stmt = dbc.prepareStatement("select paper_name, date, time, close, volume from StockData where date between ? and ? and papername in ("+sb.toString()+")");
+				stmt = dbc.prepareStatement("select paper_name, date, time, close, volume from StockData where date between ? and ? and paper_name in ("+sb.toString()+")");
 
 				for(int i=0; i<tickers.length; ++i) stmt.setString(i+3, tickers[i]);
 			}
