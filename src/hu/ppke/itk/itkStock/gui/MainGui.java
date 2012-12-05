@@ -28,6 +28,7 @@ public class MainGui {
 	private static SettingsComposite settingsComposite;
 	private static XmlConfigComposite xmlConfigComposite;
 	private static ClientSettingsComposite accountComposite;
+	private static StockGameComposite stockGameComposite;
 	private int pageNumber = -1;
 	private static Composite page1 = null;
 	static StackLayout layout=null;
@@ -81,7 +82,10 @@ public class MainGui {
 		
 		xmlConfigComposite = new XmlConfigComposite(contentPanel, SWT.NONE);
 		
+		stockGameComposite = new StockGameComposite(contentPanel, SWT.NONE);
+		
 		accountComposite = new ClientSettingsComposite(contentPanel, SWT.NONE);
+		
 		 menu = new Menu(shell, SWT.BAR);
 			shell.setMenuBar(menu);
 			
@@ -167,6 +171,18 @@ public class MainGui {
 			public void handleEvent(Event arg0) {
 				// TODO Auto-generated method stub
 				layout.topControl = xmlConfigComposite;
+				contentPanel.layout();
+			}
+		});
+		
+		MenuItem mntmStockGameView = new MenuItem(menu_2, SWT.NONE);
+		mntmStockGameView.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.mntmStockGameView.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		mntmStockGameView.addListener(SWT.Selection, new Listener() {
+			
+			@Override
+			public void handleEvent(Event arg0) {
+				// TODO Auto-generated method stub
+				layout.topControl = stockGameComposite;
 				contentPanel.layout();
 			}
 		});
