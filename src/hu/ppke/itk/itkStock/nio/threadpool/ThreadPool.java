@@ -4,8 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * * A very simple thread pool class. The pool size is set at * construction
+ * A very simple SINGLETON thread pool class. The pool size is set at construction
  * time and remains fixed. Threads are cycled * through a FIFO idle queue.
+ * The taken_processors value is necessary for the maximum performance.
  */
 public class ThreadPool {
 	private final int TAKEN_PROCESSORS = 0;

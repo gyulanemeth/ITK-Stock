@@ -18,20 +18,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * * A worker thread class which can drain channels and echo-back * the input.
- * Each instance is constructed with a reference to * the owning thread pool
- * object. When started, the thread loops * forever waiting to be awakened to
- * service the channel associated * with a SelectionKey object. * The worker is
- * tasked by calling its serviceChannel( ) method * with a SelectionKey object.
- * The serviceChannel( ) method stores * the key reference in the thread object
- * then calls notify( ) * to wake it up. When the channel has been drained, the
- * worker * thread returns itself to its parent pool.
+ * @author Andras A simple Thread class to service on the thread pool request.
+ */
+/**
+ * @author Andras
+ * 
  */
 public class WorkerThread extends Thread {
 	private SelectionKey key;
 	private ByteBuffer data;
 
-	// Loop forever waiting for work to do
 	public synchronized void run() {
 		System.out.println(this.getName() + " is ready");
 		while (true) {
@@ -51,13 +47,15 @@ public class WorkerThread extends Thread {
 	}
 
 	/**
-	 * * Called to initiate a unit of work by this worker thread * on the
-	 * provided SelectionKey object. This method is * synchronized, as is the
-	 * run( ) method, so only one key * can be serviced at a given time. *
-	 * Before waking the worker thread, and before returning * to the main
-	 * selection loop, this key's interest set is * updated to remove OP_READ.
-	 * This will cause the selector * to ignore read-readiness for this channel
-	 * while the * worker thread is servicing it.
+	 * This method is called from the static HistoricDataWorker. At every pull
+	 * request, this method sets the serviceable selection key, and generates
+	 * the response asked inside the requested data byte array. Finally, it
+	 * notifyes the run loop, that we got data it can service.
+	 * 
+	 * @param k
+	 *            - the key to service
+	 * @param requestedData
+	 *            - The requested data, in its specific form.
 	 */
 	public synchronized void serviceChannel(SelectionKey k, byte[] requestedData) {
 		key = k;
@@ -65,12 +63,27 @@ public class WorkerThread extends Thread {
 			data = request(requestedData);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			data = ByteBuffer.wrap("There where database error at the request".getBytes());
+			data = ByteBuffer.wrap("There where database error at the request"
+					.getBytes());
 		}
 		key.interestOps(key.interestOps() & (~SelectionKey.OP_WRITE));
 		this.notify();
 	}
 
+	/**
+	 * @param r
+	 *            The data in byte[], in the form of T(optional ticker(s,
+	 *            separeted my commas))S(Y-m-d of the given day, in case of the
+	 *            next parameter is not empty, this means the first day)E(Y-m-d
+	 *            or a simple -)
+	 *            Examples: 
+	 *            T(OTP,EGIS)S(2012-01-01)E(2012-10-10)
+	 *            			OTP and EGIS datas between 2012-01-01 and 2012-10-10
+	 *            T()S(2010-01-25)E(-)
+	 *            			all data from 2010-01-25
+	 * @return The serialized data.
+	 * @throws SQLException
+	 */
 	private synchronized ByteBuffer request(byte[] r) throws SQLException {
 		Pattern datePatt = Pattern.compile("T\\((.+)\\)S\\((.+)\\)E\\((.+)\\)");
 		Matcher m = datePatt.matcher(r.toString());
@@ -96,7 +109,7 @@ public class WorkerThread extends Thread {
 					result = StockData.fetchData(start, end);
 			} else {
 				if (end == null)
-					result = StockData.fetchData(tickers,start);
+					result = StockData.fetchData(tickers, start);
 				else
 					result = StockData.fetchData(tickers, start, end);
 			}
