@@ -14,6 +14,8 @@ public class ProtocolTools {
 	public static final short unregisterWatcher = 203;
 	public static final short unregisterWatcherResponse = 204;
 	public static final short watcherClientNotify = 206;
+	public static final short requestForHistoricalData = 301;
+	public static final short getHistoricalData = 401;
 	
 
 	public static byte[] shortToBytes(short s) {

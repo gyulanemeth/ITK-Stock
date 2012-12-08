@@ -1,5 +1,6 @@
 package hu.ppke.itk.itkStock.nio.threadpool;
 
+import hu.ppke.itk.itkStock.client.watcherClient.SerializationTools;
 import hu.ppke.itk.itkStock.server.db.historicData.StockData;
 import hu.ppke.itk.itkStock.server.db.historicData.StockDate;
 import hu.ppke.itk.itkStock.server.db.historicData.StockTime;
@@ -114,15 +115,7 @@ public class WorkerThread extends Thread {
 					result = StockData.fetchData(tickers, start, end);
 			}
 		}
-		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-		ObjectOutputStream out;
-		try {
-			out = new ObjectOutputStream(byteOut);
-			out.writeObject(result);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		r = byteOut.toByteArray();
+		r = SerializationTools.objectToBytes(result);
 		ByteBuffer buffer = ByteBuffer.allocate(r.length);
 		buffer.put(r);
 		return buffer;

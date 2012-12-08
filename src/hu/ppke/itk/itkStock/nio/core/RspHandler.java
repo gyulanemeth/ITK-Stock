@@ -19,18 +19,19 @@ public class RspHandler {
 	}
 
 	private byte[] rsp = null;
+	
 
 	public synchronized boolean handleResponse(byte[] rsp) {
-		this.rsp = rsp;
+		this.setRsp(rsp);
 		//this.rsp[2] = 65;
 		ProtocolMessage m = ProtocolMessage.parseMessage(this.rsp);
 		//System.out.println("ASD: "+new String(new byte[]{this.rsp[3]}));
 		AbstractProtocolCommandWorker obj = protocolCommandWorkers.get(m.command);
 		if (obj != null)
-			this.rsp = obj.response(m).toByteArray();
+			this.setRsp(obj.response(m).toByteArray());
 		else {
 			System.err.println("RspHandler: Unknown command: " + m.command);
-			this.rsp = ("RspHandler: Unknown command: " + m.command).getBytes();
+			this.setRsp(("RspHandler: Unknown command: " + m.command).getBytes());
 		}
 		//System.out.println("RESPONSE: " + new String(new byte[]{this.rsp[8]}));
 		
@@ -48,5 +49,8 @@ public class RspHandler {
 		}
 
 		//System.out.println("RESPONSE: " + new String(new byte[]{this.rsp[8]}));
+	}
+	public void setRsp(byte[] rsp) {
+		this.rsp = rsp;
 	}
 }
