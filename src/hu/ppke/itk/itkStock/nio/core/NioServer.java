@@ -1,4 +1,7 @@
 package hu.ppke.itk.itkStock.nio.core;
+import hu.ppke.itk.itkStock.nio.protocol.ProtocolMessage;
+import hu.ppke.itk.itkStock.nio.threadpool.HistoricalDataWorker;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -156,9 +159,16 @@ public class NioServer implements Runnable {
 			return;
 		}
 
-		// Hand the data off to our worker thread
-		this.worker.processData(this, socketChannel, this.readBuffer.array(),
-				numRead);
+		byte[] bs = this.readBuffer.array();
+		// check whether the request is for historical data(true case) or for
+		// other worker(false case)
+		if (ProtocolMessage.parseMessage(bs).command == (short) 301) {
+		// service historical data request
+			HistoricalDataWorker.writeDataToSocket(key, ProtocolMessage.parseMessage(bs).data);
+		} else {
+			// Hand the data off to our worker thread
+			this.worker.processData(this, socketChannel, bs, numRead);
+		}
 	}
 
 	private void write(SelectionKey key) throws IOException {
