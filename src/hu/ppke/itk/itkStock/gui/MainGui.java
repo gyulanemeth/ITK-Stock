@@ -86,7 +86,7 @@ public class MainGui {
 		
 		xmlConfigComposite = new XmlConfigComposite(contentPanel, SWT.NONE);
 		
-		stockGameComposite = new StockGameComposite(contentPanel, SWT.NONE);
+		//stockGameComposite = new StockGameComposite(contentPanel, SWT.NONE);
 		
 		accountComposite = new ClientSettingsComposite(contentPanel, SWT.NONE);
 		
@@ -157,7 +157,7 @@ public class MainGui {
 			
 		
 		
-		MenuItem config = new MenuItem(menu_2, SWT.NONE);
+		final MenuItem config = new MenuItem(menu_2, SWT.NONE);
 		config.setText(ResourceBundle.getBundle("hu.ppke.itk.itkStock.gui.messages").getString("MainGui.config.text")); //$NON-NLS-1$ //$NON-NLS-2$
 		config.addListener(SWT.Selection, new Listener() {
 			
@@ -165,6 +165,8 @@ public class MainGui {
 			public void handleEvent(Event arg0) {
 				// TODO Auto-generated method stub
 				layout.topControl = candleComposite;
+				config.setAccelerator(SWT.MOD1  + 'N');
+				candleComposite.panel.setVisible(true);
 				contentPanel.layout();
 			}
 		});
